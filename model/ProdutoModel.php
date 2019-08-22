@@ -36,6 +36,6 @@
 		public function getQtd(){
 			return $this->qtd;
 		}
-
+	}
 
 ?>
