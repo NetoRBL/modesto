@@ -36,6 +36,7 @@
 		public function getQtd(){
 			return $this->qtd;
 		}
+		//Ola neto
 	}
 
 ?>
