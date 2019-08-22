@@ -16,11 +16,25 @@
 			return $this->nome;
 		}
 
-		public function setDescricao($nome){
-			$this->nome = $nome;
+		public function setDescricao($descricao){
+			$this->descricao = $descricao;
 		}
 		public function getDescricao(){
-			return $this->nome;
+			return $this->descricao;
+		}
+
+		public function setPreco($preco){
+			$this->preco = $preco;
+		}
+		public function getPreco(){
+			return $this->preco;
+		}
+
+		public function setQtd($qtd){
+			$this->qtd = $qtd;
+		}
+		public function getQtd(){
+			return $this->qtd;
 		}
 	}
 
