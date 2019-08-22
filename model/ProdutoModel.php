@@ -36,7 +36,13 @@
 		public function getQtd(){
 			return $this->qtd;
 		}
-		//Ola neto
+		
+		public function setImagem($imagem){
+			$this->imagem = $imagem;
+		}
+		public function getImagem(){
+			return $this->imagem;
+		}
 	}
 
 ?>
