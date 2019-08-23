@@ -1,3 +1,19 @@
+<?php
+  session_start();
+
+  include_once("../../controller/AdminDAO.php");
+  include_once("../../model/AdminModel.php");
+  
+  if(isset($_POST['deslogar'])){
+    if($_POST['deslogar']=="Sim"){
+      unset($_SESSION['login']);
+      session_destroy();
+    }
+  }
+  if(!empty($_SESSION['login'])){
+    $log = $_SESSION['login'];
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -55,6 +71,35 @@
       <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
         <span class="sr-only">Toggle navigation</span>
       </a>
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <!-- User Account: style can be found in dropdown.less -->
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="fa fa-power-off"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <!-- User image -->
+              <li class="user-header">
+                <p>
+                  Tem certeza que deseja deslogar?
+                </p>
+              </li>
+              <!-- Menu Footer-->
+              <li class="user-footer">
+                <div class="pull-left">
+                  <form method="post">
+                    <input type="submit" name="deslogar" value="Sim" class="btn btn-primary">
+                  </form>
+                </div>
+                <div class="pull-right">
+                  <a href="#" class="btn btn-danger">Não</a>
+                </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
     </nav>
   </header>
   <!-- Left side column. contains the logo and sidebar -->
@@ -193,3 +238,4 @@
 <script src="../dist/js/demo.js"></script>
 </body>
 </html>
+<?php } else{ header("location:../index.php"); } ?>
