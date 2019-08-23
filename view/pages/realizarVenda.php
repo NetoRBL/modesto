@@ -75,23 +75,23 @@
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">NAVEGAÇÃO</li>
         <li >
-          <a href="../index.html">
+          <a href="../inicio.php">
             <i class="fa fa-home"></i> <span>Inicio</span>
           </a>
         </li>
-        <li>
-          <a href="../index.html">
+        <li class="active treeview">
+          <a href="realizarVenda.php">
             <i class="fa fa-money"></i>
             <span>Realizar Venda</span>
           </a>
         </li>
         <li>
-          <a href="../index.html">
+          <a href="vendas.php">
             <i class="glyphicon glyphicon-shopping-cart"></i> <span>Vendas</span>
           </a>
         </li>
         <li>
-          <a href="../index.html">
+          <a href="produtos.php">
             <i class="glyphicon glyphicon-pencil"></i> <span>Produtos</span>
           </a>
         </li>
@@ -100,7 +100,6 @@
     </section>
     <!-- /.sidebar -->
   </aside>
-
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
