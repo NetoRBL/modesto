@@ -154,7 +154,6 @@
             <div class="inner">
               <h3>44</h3>
               <p><h4>Nº de impressões</h4></p>
-
             </div>
             <div class="icon">
               <i class="fa fa-newspaper-o"></i>
