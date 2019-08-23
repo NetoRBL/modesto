@@ -3,17 +3,33 @@
 	class Produto {
 
 		private $id;
+		private $cod_barra;
 		private $nome;
+		private $marca;
 		private $descricao;
 		private $preco;
 		private $qtd;
 		private $imagem;
+
+		public function setCod_barra($cod_barra){
+			$this->cod_barra = $cod_barra;
+		}
+		public function getCod_barra(){
+			return $this->cod_barra;
+		}
 
 		public function setNome($nome){
 			$this->nome = $nome;
 		}
 		public function getNome(){
 			return $this->nome;
+		}
+
+		public function setMarca($marca){
+			$this->marca = $marca;
+		}
+		public function getMarca(){
+			return $this->marca;
 		}
 
 		public function setDescricao($descricao){

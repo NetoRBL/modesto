@@ -1,3 +1,19 @@
+<?php
+  session_start();
+
+  include_once("../../controller/AdminDAO.php");
+  include_once("../../model/AdminModel.php");
+  
+  if(isset($_POST['deslogar'])){
+    if($_POST['deslogar']=="Sim"){
+      unset($_SESSION['login']);
+      session_destroy();
+    }
+  }
+  if(!empty($_SESSION['login'])){
+    $log = $_SESSION['login'];
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -40,6 +56,8 @@
         <span class="logo-lg"><b>Modesto</b> Idiomas</span>
       </a>
 
+
+
       <nav class="navbar navbar-static-top">
 
         <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
@@ -47,6 +65,102 @@
         </a>
       </nav>
     </header>
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <!-- User Account: style can be found in dropdown.less -->
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="fa fa-power-off"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <!-- User image -->
+              <li class="user-header">
+                <p>
+                  Tem certeza que deseja deslogar?
+                </p>
+              </li>
+              <!-- Menu Footer-->
+              <li class="user-footer">
+                <div class="pull-left">
+                  <form method="post">
+                    <input type="submit" name="deslogar" value="Sim" class="btn btn-primary">
+                  </form>
+                </div>
+                <div class="pull-right">
+                  <a href="#" class="btn btn-danger">Não</a>
+                </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+  <!-- Left side column. contains the logo and sidebar -->
+  <aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+      <!-- Sidebar user panel -->
+      <div class="user-panel">
+        <div class="pull-left image">
+          <img src="../dist/img/user9 160x160.jpg" class="img-circle" alt="User Image">
+        </div>
+        <div class="pull-left info">
+          <p>Tonin Tornado</p>
+          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+        </div>
+      </div>
+      <!-- sidebar menu: : style can be found in sidebar.less -->
+      <ul class="sidebar-menu" data-widget="tree">
+        <li class="header">NAVEGAÇÃO</li>
+        <li >
+          <a href="../inicio.php">
+            <i class="fa fa-home"></i> <span>Inicio</span>
+          </a>
+        </li>
+        <li class="active treeview">
+          <a href="realizarVenda.php">
+            <i class="fa fa-money"></i>
+            <span>Realizar Venda</span>
+          </a>
+        </li>
+        <li>
+          <a href="vendas.php">
+            <i class="glyphicon glyphicon-shopping-cart"></i> <span>Vendas</span>
+          </a>
+        </li>
+        <li>
+          <a href="produtos.php">
+            <i class="glyphicon glyphicon-pencil"></i> <span>Produtos</span>
+          </a>
+        </li>
+        <li><a href="https://adminlte.io/docs"><i class="fa fa-book"></i> <span>Documentation</span></a></li>
+      </ul>
+    </section>
+    <!-- /.sidebar -->
+  </aside>
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Dashboard
+        <small>Control panel</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="index.html"><i class="fa fa-home"></i> Inicio</a></li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+    <div class=" col-md-7">
+      <select class="form-control form-control-sm ">
+      <option>Large select</option> 
+
+    </select>
+    </div>
+
     
     <aside class="main-sidebar">
 
@@ -156,3 +270,4 @@
 
 </body>
 </html>
+<?php } else{ header("location:../index.php"); } ?>
