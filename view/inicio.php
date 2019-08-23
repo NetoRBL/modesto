@@ -75,24 +75,24 @@
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">NAVEGAÇÃO</li>
         <li class="active treeview">
-          <a href="index.html">
+          <a href="inicio.php">
             <i class="fa fa-home"></i>
             <span>Inicio</span>
           </a>
         </li>
         <li>
-          <a href="index.html">
+          <a href="pages/realizarVenda.php">
             <i class="fa fa-money"></i>
             <span>Realizar Venda</span>
           </a>
         </li>
         <li>
-          <a href="index.html">
+          <a href="pages/vendas.php">
             <i class="glyphicon glyphicon-shopping-cart"></i> <span>Vendas</span>
           </a>
         </li>
         <li>
-          <a href="pages/Produtos.html">
+          <a href="pages/produtos.php">
             <i class="glyphicon glyphicon-pencil"></i> <span>Produtos</span>
           </a>
         </li>
@@ -111,7 +111,7 @@
         <small>Painel de Controle</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="index.html"><i class="fa fa-home"></i> Inicio</a></li>
+        <li><a href="inicio.php"><i class="fa fa-home"></i> Inicio</a></li>
       </ol>
     </section>
 
@@ -128,7 +128,7 @@
               <p><h4>Ganho atual</h4></p>
             </div>
             <div class="icon">
-              <i class="ion ion-bag"></i>
+              <i class="fa fa-dollar"></i>
             </div>
           </div>
         </div>
@@ -143,7 +143,7 @@
 
             </div>
             <div class="icon">
-              <i class="ion ion-stats-bars"></i>
+              <i class="fa fa-trophy"></i>
             </div>
           </div>
         </div>
@@ -153,12 +153,11 @@
           <div class="small-box bg-yellow">
             <div class="inner">
               <h3>44</h3>
-
               <p><h4>Nº de impressões</h4></p>
 
             </div>
             <div class="icon">
-              <i class="ion ion-person-add"></i>
+              <i class="fa fa-newspaper-o"></i>
             </div>
           </div>
         </div>
