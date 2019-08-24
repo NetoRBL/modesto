@@ -7,6 +7,7 @@
 		private $produto;
 		private $data;
 		private $hora;
+		private $tipo;
 
 		public function setValor($valor){
 			$this->valor = $valor;
@@ -34,6 +35,13 @@
 		}
 		public function getHora(){
 			return $this->hora;
+		}
+
+		public function setTipo($tipo){
+			$this->tipo = $tipo;
+		}
+		public function getTipo(){
+			return $this->tipo;
 		}
 	}
 
