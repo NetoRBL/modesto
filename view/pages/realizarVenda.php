@@ -281,20 +281,17 @@ if(!empty($_SESSION['login'])){
                   "zeroRecords": "Nenhum produto encontrado",
                   "info": "Mostrando _PAGE_ de _PAGES_ páginas",
                   "infoEmpty": "Nenhum registro disponível",
-                  "infoFiltered": "(filtrado de _MAX_ registros no total)"
-                }
-              })
-            });
-              $(function () {
-                $('#myTable').DataTable({
+                  "infoFiltered": "(filtrado de _MAX_ registros no total)",
                   'paging'      : true,
                   'lengthChange': false,
                   'searching'   : true,
                   'ordering'    : true,
                   'info'        : true,
                   'autoWidth'   : false
-                })
+                }
               })
+            });
+              
           </script>
           
 
@@ -327,7 +324,7 @@ if(!empty($_SESSION['login'])){
         <h5 class="modal-title " align="center">Quantidade de produtos</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
           <span aria-hidden="true">&times;</span>
-          
+
         </button>
       </div>
       <div class="modal-body">
