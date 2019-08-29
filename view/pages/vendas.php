@@ -43,6 +43,8 @@
   <link rel="stylesheet" href="../bower_components/bootstrap-daterangepicker/daterangepicker.css">
   <!-- bootstrap wysihtml5 - text editor -->
   <link rel="stylesheet" href="../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" type="text/css" href="../DataTables/datatables.min.css"/>
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -166,48 +168,71 @@
       <!-- Main row -->
       <div class="row">
         <!-- Left col -->
-        <section class="col-lg-7 connectedSortable">
-          <!-- Custom tabs (Charts with tabs)-->
-          <div class="nav-tabs-custom">
-            <!-- Tabs within a box -->
-            <ul class="nav nav-tabs pull-right">
-              <li class="active"><a href="#revenue-chart" data-toggle="tab">Area</a></li>
-              <li><a href="#sales-chart" data-toggle="tab">Donut</a></li>
-              <li class="pull-left header"><i class="fa fa-inbox"></i> Sales</li>
-            </ul>
-            <div class="tab-content no-padding">
-              <!-- Morris chart - Sales -->
-              <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 300px;"></div>
-              <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;"></div>
+        <section class="col-lg-6 connectedSortable">
+          <!-- /.box-header -->
+          <h3>Tabela de produtos vendidos</h3>
+            <div class="box-body">
+              <table id="tabelaProdutos" class="table table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th>Produto</th>
+                    <th>Valor</th>
+                    <th>Data</th>
+                    <th>Hora</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Caneta</td>
+                    <td>R$ 20.00</td>
+                    <td>20/08/2019</td>
+                    <td>08:51</td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th>Produto</th>
+                    <th>Valor</th>
+                    <th>Data</th>
+                    <th>Hora</th>
+                  </tr>
+                </tfoot>
+              </table>
             </div>
-          </div>
-          <!-- /.nav-tabs-custom -->
         </section>
 
         <!-- right col -->
-        <section class="col-lg-5 connectedSortable">
-          <!-- Calendar -->
-          <div class="box box-solid bg-green-gradient">
-            <div class="box-header">
-              <i class="fa fa-calendar"></i>
-
-              <h3 class="box-title">Calendar</h3>
-              <!-- tools box -->
-              <div class="pull-right box-tools">
-                <!-- button with a dropdown -->
-                <button type="button" class="btn btn-success btn-sm" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-              </div>
-              <!-- /. tools -->
+        <section class="col-lg-6 connectedSortable">
+          <!-- /.box-header -->
+          <h3>Tabela de impressões/plastificações</h3>
+            <div class="box-body">
+              <table id="tabelaImpressoes" class="table table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th>Produto</th>
+                    <th>Valor</th>
+                    <th>Data</th>
+                    <th>Hora</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Xerox</td>
+                    <td>R$ 02.15</td>
+                    <td>26/08/2019</td>
+                    <td>11:51</td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th>Produto</th>
+                    <th>Valor</th>
+                    <th>Data</th>
+                    <th>Hora</th>
+                  </tr>
+                </tfoot>
+              </table>
             </div>
-            <!-- /.box-header -->
-            <div class="box-body no-padding">
-              <!--The calendar -->
-              <div id="calendar" style="width: 100%"></div>
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
         </section>
       </div>
       <!-- /.row (main row) -->
@@ -246,6 +271,8 @@
 <script src="../bower_components/morris.js/morris.min.js"></script>
 <!-- Sparkline -->
 <script src="../bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+<!-- data table -->
+<script src="../dist/js/adminlte.min.js"></script>
 <!-- jvectormap -->
 <script src="../plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
 <script src="../plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
@@ -268,6 +295,41 @@
 <script src="../dist/js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../dist/js/demo.js"></script>
+<!-- data table -->
+<script type="text/javascript" src="../DataTables/datatables.min.js"></script>
+<script>
+    $(document).ready(function(){
+      $('#tabelaProdutos').dataTable({
+        "language": {
+          "lengthMenu": "Mostrando _MENU_ vendas por página",
+          "zeroRecords": "Nenhuma venda encontrado",
+          "info": "Mostrando _PAGE_ de _PAGES_ páginas",
+          "infoEmpty": "Nenhum registro disponível",
+          "infoFiltered": "(filtrado de _MAX_ registros no total)",
+          'paging'      : true,
+          'lengthChange': false,
+          'searching'   : true,
+          'ordering'    : true,
+          'autoWidth'   : false
+        }
+      });
+      $('#tabelaImpressoes').dataTable({
+        "language": {
+          "lengthMenu": "Mostrando _MENU_ vendas por página",
+          "zeroRecords": "Nenhuma venda encontrado",
+          "info": "Mostrando _PAGE_ de _PAGES_ páginas",
+          "infoEmpty": "Nenhum registro disponível",
+          "infoFiltered": "(filtrado de _MAX_ registros no total)",
+          'paging'      : true,
+          'lengthChange': false,
+          'searching'   : true,
+          'ordering'    : true,
+          'autoWidth'   : false
+        }
+      })
+    });
+
+  </script>
 </body>
 </html>
 <?php } else{ header("location:../index.php"); } ?>
