@@ -327,6 +327,7 @@ if(!empty($_SESSION['login'])){
         <h5 class="modal-title " align="center">Quantidade de produtos</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
           <span aria-hidden="true">&times;</span>
+          
         </button>
       </div>
       <div class="modal-body">
