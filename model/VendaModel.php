@@ -1,10 +1,11 @@
 <?php
 
-	class Produto {
+	class Venda {
 
 		private $id;
 		private $valor;
 		private $produto;
+		private $qtd;
 		private $data;
 		private $hora;
 		private $tipo;
@@ -21,6 +22,13 @@
 		}
 		public function getProduto(){
 			return $this->produto;
+		}
+
+		public function setQtd($qtd){
+			$this->qtd = $qtd;
+		}
+		public function getQtd(){
+			return $this->qtd;
 		}
 
 		public function setData($data){

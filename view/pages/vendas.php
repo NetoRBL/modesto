@@ -3,6 +3,12 @@
 
   include_once("../../controller/AdminDAO.php");
   include_once("../../model/AdminModel.php");
+  include_once("../../model/VendaModel.php");
+  include_once("../../controller/VendaDAO.php");
+
+  $venda = new Venda();
+  $venda_produtos = listar_vendas_produtos();
+  $venda_impressoes = listar_vendas_impressoes();
   
   if(isset($_POST['deslogar'])){
     if($_POST['deslogar']=="Sim"){
@@ -152,11 +158,11 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Dashboard
-        <small>Control panel</small>
+        Vendas
+        <small>listagem de vendas</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="index.html"><i class="fa fa-home"></i> Inicio</a></li>
+        <li><a href="vendas.php"><i class="glyphicon glyphicon-shopping-cart"></i> Vendas</a></li>
       </ol>
     </section>
 
@@ -177,22 +183,29 @@
                   <tr>
                     <th>Produto</th>
                     <th>Valor</th>
+                    <th>Quantidade</th>
                     <th>Data</th>
                     <th>Hora</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>Caneta</td>
-                    <td>R$ 20.00</td>
-                    <td>20/08/2019</td>
-                    <td>08:51</td>
-                  </tr>
+                  <?php
+                    foreach ($venda_produtos as $venda) {
+                      echo "<tr>";
+                      echo "<td>" . $venda["produto"] . "</td>";
+                      echo "<td>R$ " . number_format($venda["valor"], 2, '.', '') . "</td>";
+                      echo "<td>" . $venda["qtd"] . "</td>";
+                      echo "<td>" . $venda["data"] . "</td>";
+                      echo "<td>" . $venda["hora"] . "</td>";
+                      echo "</tr>";
+                    }
+                  ?>
                 </tbody>
                 <tfoot>
                   <tr>
                     <th>Produto</th>
                     <th>Valor</th>
+                    <th>Quantidade</th>
                     <th>Data</th>
                     <th>Hora</th>
                   </tr>
@@ -211,22 +224,29 @@
                   <tr>
                     <th>Produto</th>
                     <th>Valor</th>
+                    <th>Quantidade</th>
                     <th>Data</th>
                     <th>Hora</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>Xerox</td>
-                    <td>R$ 02.15</td>
-                    <td>26/08/2019</td>
-                    <td>11:51</td>
-                  </tr>
+                  <?php
+                    foreach ($venda_impressoes as $venda) {
+                      echo "<tr>";
+                      echo "<td>" . $venda["produto"] . "</td>";
+                      echo "<td>R$ " . number_format($venda["valor"], 2, '.', '') . "</td>";
+                      echo "<td>" . $venda["qtd"] . "</td>";
+                      echo "<td>" . $venda["data"] . "</td>";
+                      echo "<td>" . $venda["hora"] . "</td>";
+                      echo "</tr>";
+                    }
+                  ?>
                 </tbody>
                 <tfoot>
                   <tr>
                     <th>Produto</th>
                     <th>Valor</th>
+                    <th>Quantidade</th>
                     <th>Data</th>
                     <th>Hora</th>
                   </tr>
