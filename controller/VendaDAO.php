@@ -96,7 +96,7 @@
 
 	function cadastrar_venda($venda){
 		try{
-			require_once("../config/conexao.php");
+			require_once("../../config/conexao.php");
 			$sql ="INSERT INTO venda (valor, produto, qtd, data, hora, tipo) VALUES (:valor, :produto, :qtd, :data, :hora, :tipo)";
 			$pdo = new PDO('mysql:host=localhost;dbname=modesto;charset=utf8', 'root', '');
 			$inserir = $pdo->prepare($sql);
@@ -107,7 +107,7 @@
 			$inserir->bindValue(':hora',$venda->getHora());
 			$inserir->bindValue(':tipo',$venda->getTipo());
 			$inserir->execute();
-			header("location:../view/pages/vendas.php");
+			header("location:vendas.php");
 		} catch(PDOException $e){
 			echo 'Erro:' . $e->getMessage();
 		}
