@@ -11,6 +11,12 @@
 		private $qtd;
 		private $imagem;
 
+		public function setId($id){
+			$this->id = $id;
+		}
+		public function getId(){
+			return $this->id;
+		}
 		public function setCod_barra($cod_barra){
 			$this->cod_barra = $cod_barra;
 		}
@@ -51,6 +57,12 @@
 		}
 		public function getQtd(){
 			return $this->qtd;
+		}
+		public function setImagem($imagem){
+			$this->imagem = $imagem;
+		}
+		public function getImagem(){
+			return $this->imagem;
 		}
 	}
 
