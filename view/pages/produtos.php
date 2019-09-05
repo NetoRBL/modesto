@@ -352,7 +352,6 @@ if(!empty($_SESSION['login'])){
                   'lengthChange': false,
                   'searching'   : true,
                   'ordering'    : true,
-                  'info'        : true,
                   'autoWidth'   : false
                 }
 
