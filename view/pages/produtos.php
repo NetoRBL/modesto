@@ -204,7 +204,6 @@ if(!empty($_SESSION['login'])){
             <i class="glyphicon glyphicon-pencil"></i> <span>Produtos</span>
           </a>
         </li>
-        <li><a href="https://adminlte.io/docs"><i class="fa fa-book"></i> <span>Documentation</span></a></li>
       </ul>
 
 
@@ -225,57 +224,70 @@ if(!empty($_SESSION['login'])){
 
   <div class="content-wrapper">
 
-    <div>
-
-
-        <h1 id="divi">
-          Produtos
-        </h1>
-        <button class='btn btn-primary' data-toggle="modal" data-target="#modalCadastrar" style="margin-left: 92%; margin-bottom: 0.5%;">Cadastrar produto</button>
+      <div>
+        <section class="content-header">
+          <h1>
+            Produtos
+            <small>controle de produtos</small>
+          </h1>
+          <ol class="breadcrumb">
+            <li><a href="vendas.php"><i class="glyphicon glyphicon-pencil"></i> Produtos</a></li>
+          </ol>
+        </section>
       </div>
-      <table id="myTable" class="table table-striped table-bordered" style="width:100%">
-        <thead>
-          <tr>
-            <th>Imagem</th>
-            <th>Nome</th>
-            <th>Descrição</th>
-            <th>Marca</th>
-            <th>Preço</th>
-            <th>Quantidade</th>
-            <th>Apagar</th>
-            <th>Editar</th>          
-          </tr>
-        </thead>
-        <tbody>
-          <?php
-          foreach ($lista_produtos as $produtos) {
-            ?>
-            <tr>
-              <td align='center'><?=$produtos['imagem']?> </td>
-              <td align='center'><?=$produtos['nome']?> </td>
-              <td align='center'><?=$produtos['descricao']?></td>
-              <td align='center'> <?=$produtos['marca']?> </td>
-              <td align='center'>R$  <?=$produtos['preco']?> </td>
-              <td align='center'><?=$produtos['qtd']?> </td>
-              <td align='center'><button class='btn btn-danger' data-toggle="modal" data-target="#modalDelete" onclick="trocarCamposDelete('<?=$produtos['id']?>')">+</button></td>
+      <section class="content">
+        <div class="box-body">
+          <div class="pull-right" style="padding-bottom: 10px;">
+            <button class='btn btn-primary' data-toggle="modal" data-target="#modalCadastrar">Cadastrar produto</button>
+          </div>
+          <table id="myTable" class="table table-striped table-bordered" >
+            <thead>
+              <tr>
+                <th>Imagem</th>
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th>Marca</th>
+                <th>Preço</th>
+                <th>Quantidade</th>
+                <th>Apagar</th>
+                <th>Editar</th>          
+              </tr>
+            </thead>
+            <tbody>
+              <?php
+              foreach ($lista_produtos as $produtos) {
+                ?>
+                <tr>
+                  <td align='center'><?=$produtos['imagem']?> </td>
+                  <td align='center'><?=$produtos['nome']?> </td>
+                  <td align='center'><?=$produtos['descricao']?></td>
+                  <td align='center'> <?=$produtos['marca']?> </td>
+                  <td align='center'>R$  <?=$produtos['preco']?> </td>
+                  <td align='center'><?=$produtos['qtd']?> </td>
+                  <td align='center'><button class='btn btn-danger' data-toggle="modal" data-target="#modalDelete" onclick="trocarCamposDelete('<?=$produtos['id']?>')">-</button></td>
 
-              <td><button id="btnImpress" class="btn btn-primary" data-toggle="modal" data-target="#modalEditar" onclick="trocarCampos('<?=$produtos['imagem']?>','<?=$produtos['nome']?>','<?=$produtos['descricao']?>','<?=$produtos['marca']?>','<?=$produtos['preco']?>','<?=$produtos['qtd']?>','<?=$produtos['id']?>')">+</button></td>
-            </tr>
+                  <td><button id="btnImpress" class="btn btn-primary" data-toggle="modal" data-target="#modalEditar" onclick="trocarCampos('<?=$produtos['imagem']?>','<?=$produtos['nome']?>','<?=$produtos['descricao']?>','<?=$produtos['marca']?>','<?=$produtos['preco']?>','<?=$produtos['qtd']?>','<?=$produtos['id']?>')">+</button></td>
+                </tr>
 
-            <?php   
-          }
-          ?>
-        </tbody>
-        <tfoot>
-          <tr>
-            <th>Imagem</th>
-            <th>Nome</th>
-            <th>Descrição</th>
-            <th>Marca</th>
-            <th>Preço</th>
-          </tr>
-        </tfoot>
-      </table>
+                <?php   
+              }
+              ?>
+            </tbody>
+            <tfoot>
+              <tr>
+                <th>Imagem</th>
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th>Marca</th>
+                <th>Preço</th>
+                <th>Quantidade</th>
+                <th>Apagar</th>
+                <th>Editar</th> 
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </section>
 
     </div>
   </div>  
@@ -404,7 +416,7 @@ if(!empty($_SESSION['login'])){
             </div>
           </div>
 
-          <!--Modal editar-->
+          <!--Modal delete-->
           <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-sm" role="document">
               <div class="modal-content">
@@ -428,6 +440,8 @@ if(!empty($_SESSION['login'])){
             </div>
           </div>
 
+          <!-- modal cadastrar -->
+
           <div class="modal fade" id="modalCadastrar" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-lg" role="document">
               <div class="modal-content">
@@ -439,12 +453,13 @@ if(!empty($_SESSION['login'])){
                   </button>
                 </div>
                 <div class="modal-body">
-                  <form method="post">
+                  <div class="content">
+                    <form method="post" enctype="multipart/form-data">
 
 
                     <div class="form-group">
                       <div class="text-center">
-                        <img id="teste" class="img rounded-circle" src="../../imagens/default-avatar.png" style="width: 90px; height: 90px; cursor:pointer" title="Clique para adicionar uma foto"/>
+                        <img id="teste" name="imagem" class="img rounded-circle" src="../../imagens/icone-produtos.png" style="width:15%; cursor:pointer" title="Clique para adicionar uma foto"/>
                       </div>
                       <div class="form-group">
                         <input id="teste2" name="teste2" class="form-control" type="file" accept="image/*" style="display:none;">
@@ -467,7 +482,7 @@ if(!empty($_SESSION['login'])){
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                      <input type="submit" name="acao" value="Cadastrar">
+                      <input type="submit" class="btn btn-success" name="acao" value="Cadastrar">
                     </form>
                   </div>
                 </div>
