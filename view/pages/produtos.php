@@ -409,7 +409,7 @@ if(!empty($_SESSION['login'])){
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                    <input type="submit" name="acao" value="Editar">
+                    <input type="submit" class="btn btn-primary" name="acao" value="Editar">
                   </form>
                 </div>
               </div>
@@ -431,7 +431,7 @@ if(!empty($_SESSION['login'])){
                   <form method="post">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" style="margin-right: 50%;">Fechar</button>                    
                     <input type="hidden" class="form-control" name="dId" id="dId">
-                    <input type="submit" class="btn btn-secondary" name="acao" value="Delete">
+                    <input type="submit" class="btn btn-danger" name="acao" value="Delete">
                   </form>
                 </div>
 
