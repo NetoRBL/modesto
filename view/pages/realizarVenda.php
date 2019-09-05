@@ -164,7 +164,6 @@ if(!empty($_SESSION['login'])){
               <i class="glyphicon glyphicon-pencil"></i> <span>Produtos</span>
             </a>
           </li>
-          <li><a href="https://adminlte.io/docs"><i class="fa fa-book"></i> <span>Documentation</span></a></li>
         </ul>
       </section>
 
