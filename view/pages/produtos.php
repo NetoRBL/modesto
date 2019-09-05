@@ -214,39 +214,7 @@ if(!empty($_SESSION['login'])){
 
   </section>
 
-  <div>
-
-    <div class="content-wrapper">
-
-      <div>
-  </div>
-  <!-- sidebar menu: : style can be found in sidebar.less -->
-  <ul class="sidebar-menu" data-widget="tree">
-    <li class="header">NAVEGAÇÃO</li>
-    <li >
-      <a href="../inicio.php">
-        <i class="fa fa-home"></i> <span>Inicio</span>
-    </a>
-</li>
-<li>
-  <a href="realizarVenda.php">
-    <i class="fa fa-money"></i>
-    <span>Realizar Venda</span>
-</a>
-</li>
-<li>
-  <a href="vendas.php">
-    <i class="glyphicon glyphicon-shopping-cart"></i> <span>Vendas</span>
-</a>
-</li>
-<li class="active treeview">
-  <a href="produtos.php">
-    <i class="glyphicon glyphicon-pencil"></i> <span>Produtos</span>
-</a>
-</li>
-</ul>
-
-
+ 
 <!-- /.sidebar -->
 
 </aside>
