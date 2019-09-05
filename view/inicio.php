@@ -190,7 +190,7 @@ if(!empty($_SESSION['login'])){
               <div class="inner">
                 <h3>R$ <?=number_format($ganho["total_valor"], 2, '.', '')?></h3>
 
-                <p><h4>Ganho atual</h4></p>
+                <p><h4>Ganho do mês</h4></p>
               </div>
               <div class="icon">
                 <i class="fa fa-dollar"></i>
@@ -246,21 +246,22 @@ if(!empty($_SESSION['login'])){
         <div class="row">
           <!-- Left col -->
           <section class="col-lg-7 connectedSortable">
-            <!-- Custom tabs (Charts with tabs)-->
-            <div class="nav-tabs-custom">
-              <!-- Tabs within a box -->
-              <ul class="nav nav-tabs pull-right">
-                <li class="active"><a href="#revenue-chart" data-toggle="tab">Area</a></li>
-                <li><a href="#sales-chart" data-toggle="tab">Donut</a></li>
-                <li class="pull-left header"><i class="fa fa-inbox"></i> Sales</li>
-              </ul>
-              <div class="tab-content no-padding">
-                <!-- Morris chart - Sales -->
-                <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 300px;"></div>
-                <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;"></div>
+            <!-- AREA CHART -->
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Gráfico de ganho mensal</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
               </div>
             </div>
-            <!-- /.nav-tabs-custom -->
+            <div class="box-body chart-responsive">
+              <div class="chart" id="revenue-chart" style="height: 300px;"></div>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
           </section>
 
           <!-- right col -->
@@ -347,6 +348,33 @@ if(!empty($_SESSION['login'])){
 <script src="dist/js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
+<script>
+  $(function () {
+    "use strict";
+
+  // AREA CHART
+  var area = new Morris.Area({
+    element: 'revenue-chart',
+    resize: true,
+    data: [
+      {y: '2011 Q1', item1: 0, item2: 0},
+      {y: '2011 Q2', item1: 2778, item2: 2294},
+      {y: '2011 Q3', item1: 4912, item2: 1969},
+      {y: '2011 Q4', item1: 3767, item2: 3597},
+      {y: '2012 Q1', item1: 6810, item2: 1914},
+      {y: '2012 Q2', item1: 5670, item2: 4293},
+      {y: '2012 Q3', item1: 4820, item2: 3795},
+      {y: '2012 Q4', item1: 15073, item2: 5967},
+      {y: '2013 Q1', item1: 10687, item2: 4460},
+      {y: '2013 Q2', item1: 8432, item2: 5713}
+    ],
+    xkey: 'y',
+    ykeys: ['item1', 'item2'],
+    labels: ['Item 1', 'Item 2'],
+    lineColors: ['#a0d0e0', '#3c8dbc'],
+    hideHover: 'auto'
+  });
+</script>
 </body>
 </html>
 
