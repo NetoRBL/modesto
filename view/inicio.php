@@ -236,7 +236,7 @@ if(!empty($_SESSION['login'])){
                 <p><h4>Ganho do ultimo mês</h4></p>
               </div>
               <div class="icon">
-                <i class="ion ion-pie-graph"></i>
+                <i class="fa fa-graph"></i>
               </div>
             </div>
           </div>
