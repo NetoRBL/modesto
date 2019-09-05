@@ -72,6 +72,9 @@ if(!empty($_SESSION['login'])){
   i.fa-newspaper-o{
     font-size: 0.8em;
   }
+  i.fa-pie-chart{
+    font-size: 0.8em;
+  }
 </style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -235,7 +238,7 @@ if(!empty($_SESSION['login'])){
                 <p><h4>Ganho do ultimo mês</h4></p>
               </div>
               <div class="icon">
-                <i class="fa fa-graph"></i>
+                <i class="fa fa-pie-chart"></i>
               </div>
             </div>
           </div>
