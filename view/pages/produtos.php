@@ -43,7 +43,13 @@ if (isset($_POST["acao"]) and $_POST["acao"]=="Cadastrar") {
   $produto->setMarca($marca);
   $produto->setPreco($preco);
   $produto->setQtd($qtd);
-  $produto->setImagem($imagem);
+  
+  $nome_tipo = explode(".", $_FILES['imagem']['name']);
+  $tipo = $nome_tipo[1];
+  $novo_nome = sha1(microtime()) . "." . $tipo;
+  move_uploaded_file($_FILES['imagem']['tmp_name'], "../dist/img/img_produtos/".$novo_nome);
+  $produto->setImagem($novo_nome);
+  
   $produtoDAO->cadastrar_produto($produto);
 
 }
@@ -235,6 +241,7 @@ if(!empty($_SESSION['login'])){
         </h1>
         <button class='btn btn-primary' data-toggle="modal" data-target="#modalCadastrar" style="margin-left: 92%; margin-bottom: 0.5%;">Cadastrar produto</button>
       </div>
+
       <table id="myTable" class="table table-striped table-bordered" style="width:100%">
         <thead>
           <tr>
@@ -278,6 +285,61 @@ if(!empty($_SESSION['login'])){
           </tr>
         </tfoot>
       </table>
+
+      <section class="content">
+        <div class="box-body">
+          <div class="pull-right" style="padding-bottom: 10px;">
+            <button class='btn btn-primary' data-toggle="modal" data-target="#modalCadastrar">Cadastrar produto</button>
+          </div>
+          <table id="myTable" class="table table-striped table-bordered" >
+            <thead>
+              <tr>
+                <th>Imagem</th>
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th>Marca</th>
+                <th>Preço</th>
+                <th>Quantidade</th>
+                <th>Apagar</th>
+                <th>Editar</th>          
+              </tr>
+            </thead>
+            <tbody>
+              <?php
+              foreach ($lista_produtos as $produtos) {
+                ?>
+                <tr>
+                  <td align='center'><img class="img-fluid" style="width: 20%" src="../dist/img/img_produtos/<?=$produtos['imagem']?>"> </td>
+                  <td align='center'><?=$produtos['nome']?> </td>
+                  <td align='center'><?=$produtos['descricao']?></td>
+                  <td align='center'> <?=$produtos['marca']?> </td>
+                  <td align='center'>R$  <?=$produtos['preco']?> </td>
+                  <td align='center'><?=$produtos['qtd']?> </td>
+                  <td align='center'><button class='btn btn-danger' data-toggle="modal" data-target="#modalDelete" onclick="trocarCamposDelete('<?=$produtos['id']?>')">-</button></td>
+
+                  <td><button id="btnImpress" class="btn btn-primary" data-toggle="modal" data-target="#modalEditar" onclick="trocarCampos('<?=$produtos['imagem']?>','<?=$produtos['nome']?>','<?=$produtos['descricao']?>','<?=$produtos['marca']?>','<?=$produtos['preco']?>','<?=$produtos['qtd']?>','<?=$produtos['id']?>')">+</button></td>
+                </tr>
+
+                <?php   
+              }
+              ?>
+            </tbody>
+            <tfoot>
+              <tr>
+                <th>Imagem</th>
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th>Marca</th>
+                <th>Preço</th>
+                <th>Quantidade</th>
+                <th>Apagar</th>
+                <th>Editar</th> 
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </section>
+
 
     </div>
   </div>  
@@ -447,10 +509,14 @@ if(!empty($_SESSION['login'])){
 
                     <div class="form-group">
                       <div class="text-center">
+
                         <img id="teste" class="img rounded-circle" src="../../imagens/default-avatar.png" style="width: 90px; height: 90px; cursor:pointer" title="Clique para adicionar uma foto"/>
+
+                        <img id="teste" name="teste2" class="img rounded-circle" src="../../imagens/icone-produtos.png" style="width:15%; cursor:pointer" title="Clique para adicionar uma foto"/>
+
                       </div>
                       <div class="form-group">
-                        <input id="teste2" name="teste2" class="form-control" type="file" accept="image/*" style="display:none;">
+                        <input id="teste2" name="imagem" class="form-control" type="file" accept="image/*" style="display:none;">
                         <br>
                         <label for="nome">Nome</label>
                         <input type="text" class="form-control" name="nome">
