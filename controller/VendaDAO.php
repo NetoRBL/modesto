@@ -98,10 +98,10 @@ class vendaDAO{
 	function cadastrar_venda($venda){
 		try{
 			require_once("../../config/conexao.php");
-			$sql ="INSERT INTO venda ( produto, qtd, data, hora, tipo) VALUES ( :produto, :qtd, :data, :hora, :tipo)";
+			$sql ="INSERT INTO venda (valor, produto, qtd, data, hora, tipo) VALUES (:valor, :produto, :qtd, :data, :hora, :tipo)";
 			$pdo = new PDO('mysql:host=localhost;dbname=modesto;charset=utf8', 'root', '');
 			$inserir = $pdo->prepare($sql);
-			//$inserir->bindValue(':valor',$venda->getValor());
+			$inserir->bindValue(':valor',$venda->getValor());
 			$inserir->bindValue(':produto',$venda->getProduto());
 			$inserir->bindValue(':qtd',$venda->getQtd());
 			$inserir->bindValue(':data',$venda->getData());

@@ -22,6 +22,21 @@
 			}
 		}
 
+		function remover_produtos($produto){
+			try{
+				require_once("../../config/conexao.php");
+				$sql ="UPDATE produto SET qtd = :qtd WHERE id = :id";
+				$pdo = new PDO('mysql:host=localhost;dbname=modesto;charset=utf8', 'root', '');
+				$inserir = $pdo->prepare($sql);
+				$inserir->bindValue(':id',$produto->getId());
+				$inserir->bindValue(':qtd',$produto->getQtd());
+				$inserir->execute();
+				header("location:realizarVenda.php");
+			} catch(PDOException $e){
+				echo 'Erro:' . $e->getMessage();
+			}
+		}
+
 		function listar_produtos(){
 			try{
 				require_once("../../config/conexao.php");

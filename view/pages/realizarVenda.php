@@ -19,6 +19,8 @@ $produto = isset($_POST["produto"])?$_POST["produto"]:"";
 $preco = isset($_POST["preco"])?$_POST["preco"]:"";
 $imagem = isset($_FILES["imagem"]["name"])?$_FILES["imagem"]["name"]:"";
 $qtd = isset($_POST["qtd"])?$_POST["qtd"]:"";
+$qtdProd = isset($_POST["qtdProd"])?$_POST["qtdProd"]:"";
+$idProd = isset($_POST["idProd"])?$_POST["idProd"]:"";
 $data = date("d/m/Y");
 $hora = date("H:i");
 $max = isset($_POST["cId"])?$_POST["cId"]:"";
@@ -34,10 +36,12 @@ if (isset($_POST["acao"]) and $_POST["acao"]=="Vender") {
   $venda->setProduto($produto);    
   $venda->setData($data);
   $venda->setHora($hora);
-
+  $venda->setValor($preco * $qtd);
   $venda->setQtd($qtd);
-
   $venda->setTipo(0);
+  $produtoModel->setQtd($qtdProd - $qtd);
+  $produtoModel->setId($idProd);
+  $produtoDAO->remover_produtos($produtoModel);
   $vendaDAO->cadastrar_venda($venda);
 
 }
@@ -80,7 +84,7 @@ if(!empty($_SESSION['login'])){
     }
   </style>
   <script type="text/javascript">
-   function trocarCampos(imagem,produto,preco,qtd) {
+   function trocarCampos(id,imagem,produto,preco,qtd) {
     if (imagem == "") {
       var urlImagem = "../../imagens/icone-produtos.png";
     }else{
@@ -90,6 +94,8 @@ if(!empty($_SESSION['login'])){
     $("input#produto").val(produto);
     $("input#preco").val(preco);
     $("input#qtdMax").attr("max", qtd);
+    $("input#qtdProd").val(qtd);
+    $("input#idProd").val(id);
   }
 </script>
 </head>
@@ -236,7 +242,7 @@ if(!empty($_SESSION['login'])){
 
                         <tr>
                           
-                         <td align='center'><button  class='btn btn-success' onclick="trocarCampos('<?=$produtos['imagem']?>','<?=$produtos['nome']?>','<?=$produtos['preco']?>','<?=$produtos['qtd']?>')" data-toggle="modal" data-target="#modalVender">+</button></td>
+                         <td align='center'><button  class='btn btn-success' onclick="trocarCampos('<?=$produtos['id']?>','<?=$produtos['imagem']?>','<?=$produtos['nome']?>','<?=$produtos['preco']?>','<?=$produtos['qtd']?>')" data-toggle="modal" data-target="#modalVender">+</button></td>
                          <td align='center'><img class="img-fluid" style="width: 20%" src="<?=$urlImg?>"> </td>
                          <td align='center'><?=$produtos['nome']?></td>
                          <td align='center'><?=$produtos['descricao']?></td>
@@ -403,6 +409,8 @@ if(!empty($_SESSION['login'])){
               <input readonly style="cursor: pointer;" type="text" class="form-control" name="preco" id="preco">
               <label for="marca">Quantidade</label>
               <input type="number" class="form-control" name="qtd" id="qtdMax" >
+              <input type="hidden" name="qtdProd" id="qtdProd">
+              <input type="hidden" name="idProd" id="idProd">
 
             </div>
 
