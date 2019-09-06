@@ -181,7 +181,8 @@
                 <thead>
                   <tr>
                     <th>Produto</th>
-                    <th>Valor</th>
+                    <th>Valor Unit.</th>
+                    <th>Valor Tot.</th>
                     <th>Quantidade</th>
                     <th>Data</th>
                     <th>Hora</th>
@@ -192,6 +193,7 @@
                     foreach ($venda_produtos as $venda) {
                       echo "<tr>";
                       echo "<td>" . $venda["produto"] . "</td>";
+                      echo "<td>R$ " . number_format($venda["valor"]/$venda["qtd"], 2, '.', '') . "</td>";
                       echo "<td>R$ " . number_format($venda["valor"], 2, '.', '') . "</td>";
                       echo "<td>" . $venda["qtd"] . "</td>";
                       echo "<td>" . $venda["data"] . "</td>";
@@ -203,7 +205,8 @@
                 <tfoot>
                   <tr>
                     <th>Produto</th>
-                    <th>Valor</th>
+                    <th>Valor Unit.</th>
+                    <th>Valor Tot.</th>
                     <th>Quantidade</th>
                     <th>Data</th>
                     <th>Hora</th>
@@ -321,7 +324,7 @@
       $('#tabelaProdutos').dataTable({
         "language": {
           "lengthMenu": "Mostrando _MENU_ vendas por página",
-          "zeroRecords": "Nenhuma venda encontrado",
+          "zeroRecords": "Nenhuma venda encontrada",
           "info": "Mostrando _PAGE_ de _PAGES_ páginas",
           "infoEmpty": "Nenhum registro disponível",
           "infoFiltered": "(filtrado de _MAX_ registros no total)",
@@ -335,7 +338,7 @@
       $('#tabelaImpressoes').dataTable({
         "language": {
           "lengthMenu": "Mostrando _MENU_ vendas por página",
-          "zeroRecords": "Nenhuma venda encontrado",
+          "zeroRecords": "Nenhuma venda encontrada",
           "info": "Mostrando _PAGE_ de _PAGES_ páginas",
           "infoEmpty": "Nenhum registro disponível",
           "infoFiltered": "(filtrado de _MAX_ registros no total)",
