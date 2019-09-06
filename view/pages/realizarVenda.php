@@ -1,14 +1,28 @@
 <?php
 session_start();
+date_default_timezone_set('America/Sao_Paulo');
 
+include_once("../../controller/VendaDAO.php");
 include_once("../../controller/AdminDAO.php");
 include_once("../../model/AdminModel.php");
 include_once("../../model/ProdutoModel.php");
 include_once("../../controller/ProdutoDAO.php");
+include_once("../../model/VendaModel.php");
+$venda = new Venda();
 
-$produto = new Produto();
+$produtoModel = new Produto();
 $produtoDAO = new produtoDAO();
 $lista_produtos = $produtoDAO->listar_produtos();
+
+$vendaDAO = new vendaDAO();
+$produto = isset($_POST["produto"])?$_POST["produto"]:"";
+$preco = isset($_POST["preco"])?$_POST["preco"]:"";
+$imagem = isset($_FILES["imagem"]["name"])?$_FILES["imagem"]["name"]:"";
+$qtd = isset($_POST["qtd"])?$_POST["qtd"]:"";
+$data = date("d/m/Y");
+$hora = date("H:i");
+$max = isset($_POST["cId"])?$_POST["cId"]:"";
+var_dump($max);
 
 if(isset($_POST['deslogar'])){
   if($_POST['deslogar']=="Sim"){
@@ -17,6 +31,18 @@ if(isset($_POST['deslogar'])){
   }
 
 }
+if (isset($_POST["acao"]) and $_POST["acao"]=="Vender") {
+  $venda->setProduto($produto);    
+  $venda->setData($data);
+  $venda->setHora($hora);
+
+  $venda->setQtd($qtd);
+
+  $venda->setTipo(0);
+  $vendaDAO->cadastrar_venda($venda);
+
+}
+
 if(!empty($_SESSION['login'])){
   $log = $_SESSION['login'];
 
@@ -54,31 +80,13 @@ if(!empty($_SESSION['login'])){
       
     }
   </style>
-
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
-
-<!-- Google Font -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>AdminLTE 2 | Dashboard</title>
-<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-
-<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
-
-<link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
-
-<link rel="stylesheet" href="../bower_components/Ionicons/css/ionicons.min.css">
-
-<link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
-
-<link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
-
+  <script type="text/javascript">
+   function trocarCampos(produto,preco,qtd) {
+    $("input#produto").val(produto);
+    $("input#preco").val(preco);
+    $("input#qtdMax").attr("max", qtd);
+  }
+</script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
   <div class="wrapper">
@@ -208,88 +216,113 @@ if(!empty($_SESSION['login'])){
                   </thead>
                   <tbody>
                     <?php
+
                     foreach ($lista_produtos as $produtos) {
-                      echo "<tr>";
-                      echo "<td align='center'><button class='btn btn-success'>+</button></td>";
-                      echo "<td align='center'>" . $produtos['imagem'] . "</td>";
-                      echo "<td align='center'>" . $produtos['nome'] . "</td>";
-                      echo "<td align='center'>" . $produtos['descricao'] . "</td>";
-                      echo "<td align='center'>" . $produtos['marca'] . "</td>";
-                      echo "<td align='center'>R$ " . $produtos['preco'] . "</td>";
-                      echo "</tr>";
-                    }
-                    ?>
-                  </tbody>
-                  <tfoot>
-                    <tr>
-                      <th>Adicionar ao carrinho</th>
-                      <th>Imagem</th>
-                      <th>Nome</th>
-                      <th>Descrição</th>
-                      <th>Marca</th>
-                      <th>Preço</th>
-                    </tr>
-                  </tfoot>
-                </table>
-              </div>
-              <!-- /.box-body -->
-            </div>
-            <!-- /.box -->
+                      if ($produtos["qtd"] > 0) {
+
+
+                        ?>
+
+                        <tr>
+                          
+                         <td align='center'><button  class='btn btn-success' onclick="trocarCampos('<?=$produtos['nome']?>','<?=$produtos['preco']?>','<?=$produtos['qtd']?>')" data-toggle="modal" data-target="#modalVender">+</button></td>
+                         <td align='center'><?=$produtos['imagem']?> </td>
+                         <td align='center'><?=$produtos['nome']?></td>
+                         <td align='center'><?=$produtos['descricao']?></td>
+                         <td align='center'> <?=$produtos['marca']?> </td>
+                         <td align='center'>R$  <?=$produtos['preco']?> </td>
+                       
+                       </tr>
+
+                       <?php   
+                     }
+                     else{
+                      ?>
+                      <tr>
+                        <td align='center'><button disabled class='btn btn-danger' style="cursor: pointer;" title="Produto em falta">+</button></td>
+                       <td align='center'><?=$produtos['imagem']?> </td>
+                       <td align='center'><?=$produtos['nome']?> </td>
+                       <td align='center'><?=$produtos['descricao']?></td>
+                       <td align='center'> <?=$produtos['marca']?> </td>
+                       <td align='center'>R$  <?=$produtos['preco']?> </td>
+                     </tr>
+                     <?php
+                   }
+
+                 }
+
+                 ?>
+               </tbody>
+               <tfoot>
+                <tr>
+                  <th>Adicionar ao carrinho</th>
+                  <th>Imagem</th>
+                  <th>Nome</th>
+                  <th>Descrição</th>
+                  <th>Marca</th>
+                  <th>Preço</th>
+                </tr>
+              </tfoot>
+            </table>
           </div>
-          <!-- /.col -->
+          <!-- /.box-body -->
         </div>
-        <!-- /.row -->
-      </section>
-      <!-- /.content -->
-    </div>
-    <!-- /.content-wrapper -->
-    <footer class="main-footer">
-      <div class="pull-right hidden-xs">
-        <b>Version</b> 2.4.13
+        <!-- /.box -->
       </div>
-      <strong>Copyright &copy; 2014-2019 <a href="https://adminlte.io">AdminLTE</a>.</strong> All rights
-      reserved.
-    </footer>
-
-    <div class="control-sidebar-bg"></div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+<footer class="main-footer">
+  <div class="pull-right hidden-xs">
+    <b>Version</b> 2.4.13
   </div>
+  <strong>Copyright &copy; 2014-2019 <a href="https://adminlte.io">AdminLTE</a>.</strong> All rights
+  reserved.
+</footer>
 
-  <script src="../bower_components/jquery/dist/jquery.min.js"></script>
-  <!-- Bootstrap 3.3.7 -->
-  <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-  <!-- SlimScroll -->
-  <script src="../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-  <!-- FastClick -->
-  <script src="../bower_components/fastclick/lib/fastclick.js"></script>
-  <!-- AdminLTE App -->
-  <script src="../dist/js/adminlte.min.js"></script>
-  <!-- data table -->
-  <script type="text/javascript" src="../DataTables/datatables.min.js"></script>
-  <!-- AdminLTE for demo purposes -->
-  <script src="../dist/js/demo.js"></script>
-  <!-- page script -->
-  <script>
-    $('#meuModal').on('shown.bs.modal', function () {
-      $('#meuInput').trigger('focus')
-    });
-    $(document).ready(function(){
-      $('#myTable').dataTable({
-        "language": {
-          "lengthMenu": "Mostrando _MENU_ produtos por página",
-          "zeroRecords": "Nenhum produto encontrado",
-          "info": "Mostrando _PAGE_ de _PAGES_ páginas",
-          "infoEmpty": "Nenhum registro disponível",
-          "infoFiltered": "(filtrado de _MAX_ registros no total)",
-          'paging'      : true,
-          'lengthChange': false,
-          'searching'   : true,
-          'ordering'    : true,
-          'autoWidth'   : false
-        }
-      })
-    });
+<div class="control-sidebar-bg"></div>
+</div>
 
-  </script>
+<script src="../bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- SlimScroll -->
+<script src="../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="../bower_components/fastclick/lib/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="../dist/js/adminlte.min.js"></script>
+<!-- data table -->
+<script type="text/javascript" src="../DataTables/datatables.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../dist/js/demo.js"></script>
+<!-- page script -->
+<script>
+  $('#meuModal').on('shown.bs.modal', function () {
+    $('#meuInput').trigger('focus')
+  });
+  $(document).ready(function(){
+    $('#myTable').dataTable({
+      "language": {
+        "lengthMenu": "Mostrando _MENU_ produtos por página",
+        "zeroRecords": "Nenhum produto encontrado",
+        "info": "Mostrando _PAGE_ de _PAGES_ páginas",
+        "infoEmpty": "Nenhum registro disponível",
+        "infoFiltered": "(filtrado de _MAX_ registros no total)",
+        'paging'      : true,
+        'lengthChange': false,
+        'searching'   : true,
+        'ordering'    : true,
+        'autoWidth'   : false
+      }
+    })
+  });
+
+</script>
 
 
 </section>
@@ -341,31 +374,47 @@ if(!empty($_SESSION['login'])){
 </div>
 
 <!-- modal carrinho -->
-<div class="modal fade" id="modalExemplo" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-sm" role="document">
+<div class="modal fade" id="modalVender" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title " align="center">Quantidade de produtos</h5>
+        <h3 class="modal-title " align="center">Vender produto</h3>
         <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
           <span aria-hidden="true">&times;</span>
 
         </button>
       </div>
       <div class="modal-body">
-        <form>
-          <div style="position: relative; left: 21%; height:100px;   background-color:red; width: 57.5%;">
+        <form method="post" enctype="multipart/form-data">
+
+
+          <div class="form-group">
+            <div class="text-center">
+              <img id="teste" class="img rounded-circle" src="../../imagens/default-avatar.png" style="width: 90px; height: 90px; cursor:pointer" title="Clique para adicionar uma foto"/>
+            </div>
+            <div class="form-group">
+              <input id="teste2" name="teste2" class="form-control" type="file" accept="image/*" style="display:none;">
+              <br>
+              <label for="produto">Nome</label>
+              <input readonly style="cursor: pointer;" type="text" class="form-control" name="produto" id="produto">
+              <label for="preco">Preço</label>
+              <input readonly style="cursor: pointer;" type="text" class="form-control" name="preco" id="preco">
+              <label for="marca">Quantidade</label>
+              <input type="number" class="form-control" name="qtd" id="qtdMax" >
+
+            </div>
+
+
 
           </div>
-          <p align="center"><input type="number" name="num"></p>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-        <button type="button" class="btn btn-primary">Salvar mudanças</button>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            <input type="submit" name="acao" value="Vender">
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
 </body>
 </html>

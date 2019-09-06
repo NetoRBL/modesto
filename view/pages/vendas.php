@@ -6,9 +6,9 @@
   include_once("../../model/VendaModel.php");
   include_once("../../controller/VendaDAO.php");
 
-  $venda = new Venda();
-  $venda_produtos = listar_vendas_produtos();
-  $venda_impressoes = listar_vendas_impressoes();
+  $venda = new vendaDAO();
+  $venda_produtos = $venda->listar_vendas_produtos();
+  $venda_impressoes = $venda->listar_vendas_impressoes();
   
   if(isset($_POST['deslogar'])){
     if($_POST['deslogar']=="Sim"){

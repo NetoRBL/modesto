@@ -5,10 +5,10 @@ include_once("../controller/AdminDAO.php");
 include_once("../model/AdminModel.php");
 include_once("../controller/VendaDAO.php");
 include_once("../model/VendaModel.php");
-
-$ganho = listar_ganho();
-$ganho_passado = listar_ganho_passado();
-$ganho_impressoes = listar_ganho_impressoes();
+$vendaDAO = new vendaDAO();
+$ganho = $vendaDAO->listar_ganho();
+$ganho_passado = $vendaDAO->listar_ganho_passado();
+$ganho_impressoes = $vendaDAO->listar_ganho_impressoes();
 
 if(isset($_POST['deslogar'])){
   if($_POST['deslogar']=="Sim"){
