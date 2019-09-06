@@ -46,6 +46,9 @@ if (isset($_POST["acao"]) and $_POST["acao"]=="Cadastrar") {
   $tipo = $nome_tipo[1];
   $novo_nome = sha1(microtime()) . "." . $tipo;
   move_uploaded_file($_FILES['imagem']['tmp_name'], "../dist/img/img_produtos/".$novo_nome);
+  if (empty($_FILES["imagem"]["name"])) {
+    $novo_nome = "";
+  }
   $produto->setImagem($novo_nome);
   
   $produtoDAO->cadastrar_produto($produto);
@@ -77,6 +80,12 @@ if(!empty($_SESSION['login'])){
     <link rel="stylesheet" type="text/css" href="../DataTables/datatables.min.css"/>
     <script type="text/javascript">
       function trocarCampos(imagem,nome,descricao,marca,preco,qtd,id) {
+        if (imagem == "") {
+          var urlImagem = "../../imagens/icone-produtos.png";
+        }else{
+          var urlImagem = "../dist/img/img_produtos/" + imagem;
+        }
+        $("#nImagem").attr("src", urlImagem);
         $("input#nome").val(nome);
         $("input#marca").val(marca);
         $("input#descricao").val(descricao);
@@ -262,17 +271,22 @@ if(!empty($_SESSION['login'])){
             <tbody>
               <?php
               foreach ($lista_produtos as $produtos) {
+                if (empty($produtos["imagem"])) {
+                  $urlImg = "../../imagens/icone-produtos.png";
+                }else{
+                  $urlImg = "../dist/img/img_produtos/" . $produtos["imagem"];
+                }
                 ?>
                 <tr>
-                  <td align='center'><img class="img-fluid" style="width: 20%" src="../dist/img/img_produtos/<?=$produtos['imagem']?>"> </td>
+                  <td align='center'><img class="img-fluid" style="width: 20%" src="<?=$urlImg?>"> </td>
                   <td align='center'><?=$produtos['nome']?> </td>
                   <td align='center'><?=$produtos['descricao']?></td>
                   <td align='center'> <?=$produtos['marca']?> </td>
                   <td align='center'>R$  <?=$produtos['preco']?> </td>
                   <td align='center'><?=$produtos['qtd']?> </td>
-                  <td align='center'><button class='btn btn-danger' data-toggle="modal" data-target="#modalDelete" onclick="trocarCamposDelete('<?=$produtos['id']?>')">-</button></td>
+                  <td align='center'><button class='btn btn-danger' data-toggle="modal" data-target="#modalDelete" onclick="trocarCamposDelete('<?=$produtos['id']?>')"><i class="fa fa-trash-o"></i></button></td>
 
-                  <td><button id="btnImpress" class="btn btn-primary" data-toggle="modal" data-target="#modalEditar" onclick="trocarCampos('<?=$produtos['imagem']?>','<?=$produtos['nome']?>','<?=$produtos['descricao']?>','<?=$produtos['marca']?>','<?=$produtos['preco']?>','<?=$produtos['qtd']?>','<?=$produtos['id']?>')">+</button></td>
+                  <td><button id="btnImpress" class="btn btn-primary" data-toggle="modal" data-target="#modalEditar" onclick="trocarCampos('<?=$produtos['imagem']?>','<?=$produtos['nome']?>','<?=$produtos['descricao']?>','<?=$produtos['marca']?>','<?=$produtos['preco']?>','<?=$produtos['qtd']?>','<?=$produtos['id']?>')"><i class="fa fa-pencil-square-o"></i></button></td>
                 </tr>
 
                 <?php   
@@ -392,11 +406,15 @@ if(!empty($_SESSION['login'])){
 
                   </button>
                 </div>
+                <div class="text-center">
+                        <img id="nImagem" name="teste3" class="img rounded-circle" src="../../imagens/icone-produtos.png" style="width:15%; cursor:pointer" title="Clique para adicionar uma foto"/>
+                      </div>
                 <div class="modal-body">
                   <form method="post">
 
 
                     <div class="form-group">
+                      <input id="teste3" name="imagem" class="form-control" type="file" accept="image/*" style="display:none;">
                       <label for="nome">Nome</label>
                       <input type="text" class="form-control" name="nNome" id="nome" >
                       <label for="preco">Preço</label>
@@ -470,6 +488,7 @@ if(!empty($_SESSION['login'])){
                       <div class="form-group">
                         <input id="teste2" name="imagem" class="form-control" type="file" accept="image/*" style="display:none;">
                         <br>
+                        <input type="hidden" name="nImagem" id="nImagem">
                         <label for="nome">Nome</label>
                         <input type="text" class="form-control" name="nome">
                         <label for="preco">Preço</label>
