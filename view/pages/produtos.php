@@ -21,7 +21,7 @@ $nNome = isset($_POST["nNome"])?$_POST["nNome"]:"";
 $nPreco = isset($_POST["nPreco"])?$_POST["nPreco"]:"";
 $nDescricao = isset($_POST["nDescricao"])?$_POST["nDescricao"]:"";
 $nMarca = isset($_POST["nMarca"])?$_POST["nMarca"]:"";
-$nImagem = isset($_POST["nImagem"])?$_POST["nImagem"]:"";
+$eImagem = isset($_FILES["eImagem"]["name"])?$_FILES["eImagem"]["name"]:"";
 $nQtd = isset($_POST["nQtd"])?$_POST["nQtd"]:"";
 
 if(isset($_POST['deslogar'])){
@@ -61,7 +61,16 @@ if (isset($_POST["acao"]) and $_POST["acao"]=="Editar" and isset($_POST["eId"]))
   $produto->setMarca($nMarca);
   $produto->setPreco($nPreco);
   $produto->setQtd($nQtd);
-  $produto->setImagem($nImagem);
+  
+  $nome_tipo = explode(".", $_FILES['eImagem']['name']);
+  $tipo = $nome_tipo[1];
+  $novo_nome = sha1(microtime()) . "." . $tipo;
+  move_uploaded_file($_FILES['eImagem']['tmp_name'], "../dist/img/img_produtos/".$novo_nome);
+  if (empty($_FILES["eImagem"]["name"])) {
+    $novo_nome = "";
+  }
+  $produto->setImagem($novo_nome);
+
   $produto->setId($_POST["eId"]);
   $produtoDAO->editar_produto($produto);
 
@@ -411,11 +420,11 @@ if(!empty($_SESSION['login'])){
                         <img id="nImagem" name="teste3" class="img rounded-circle" src="../../imagens/icone-produtos.png" style="width:15%; cursor:pointer" title="Clique para adicionar uma foto"/>
                       </div>
                 <div class="modal-body">
-                  <form method="post">
+                  <form method="post" enctype="multipart/form-data">
 
 
                     <div class="form-group">
-                      <input id="teste4" name="imagem" class="form-control" type="file" accept="image/*" style="display:none;">
+                      <input id="teste4" name="eImagem" class="form-control" type="file" accept="image/*" style="display:none;">
                       <label for="nome">Nome</label>
                       <input type="text" class="form-control" name="nNome" id="nome" >
                       <label for="preco">Preço</label>
