@@ -24,6 +24,7 @@ $idProd = isset($_POST["idProd"])?$_POST["idProd"]:"";
 $data = date("d/m/Y");
 $hora = date("H:i");
 $max = isset($_POST["cId"])?$_POST["cId"]:"";
+$num = isset($_POST["num"])?$_POST["num"]:"";
 
 if(isset($_POST['deslogar'])){
   if($_POST['deslogar']=="Sim"){
@@ -31,6 +32,18 @@ if(isset($_POST['deslogar'])){
     session_destroy();
   }
 }
+
+if (isset($_POST["acao"]) and $_POST["acao"]=="Registrar") {
+  $venda->setProduto($produto);    
+  $venda->setData($data);
+  $venda->setHora($hora);
+  $venda->setValor($num * 0.25);
+  $venda->setQtd($num);
+  $venda->setTipo(1);
+  $vendaDAO->cadastrar_venda($venda);
+
+}
+
 if (isset($_POST["acao"]) and $_POST["acao"]=="Vender") {
   $venda->setProduto($produto);    
   $venda->setData($data);
@@ -182,6 +195,11 @@ if(!empty($_SESSION['login'])){
               <i class="glyphicon glyphicon-pencil"></i> <span>Produtos</span>
             </a>
           </li>
+           <li>
+          <a href="relatorio.php">
+            <i class="glyphicon glyphicon-print"></i> <span>Serviços</span>
+          </a>
+        </li>
         </ul>
       </section>
 
@@ -240,14 +258,14 @@ if(!empty($_SESSION['login'])){
                         ?>
 
                         <tr>
-                          
+
                          <td align='center'><button  class='btn btn-success' onclick="trocarCampos('<?=$produtos['id']?>','<?=$produtos['imagem']?>','<?=$produtos['nome']?>','<?=$produtos['preco']?>','<?=$produtos['qtd']?>')" data-toggle="modal" data-target="#modalVender">+</button></td>
                          <td align='center'><img class="img-fluid" style="width: 20%" src="<?=$urlImg?>"> </td>
                          <td align='center'><?=$produtos['nome']?></td>
                          <td align='center'><?=$produtos['descricao']?></td>
                          <td align='center'> <?=$produtos['marca']?> </td>
                          <td align='center'>R$  <?=$produtos['preco']?> </td>
-                       
+
                        </tr>
 
                        <?php   
@@ -256,51 +274,51 @@ if(!empty($_SESSION['login'])){
                       ?>
                       <tr>
                         <td align='center'><button disabled class='btn btn-danger' style="cursor: pointer;" title="Produto em falta">+</button></td>
-                       <td align='center'><img class="img-fluid" style="width: 20%" src="<?=$urlImg?>"> </td>
-                       <td align='center'><?=$produtos['nome']?> </td>
-                       <td align='center'><?=$produtos['descricao']?></td>
-                       <td align='center'> <?=$produtos['marca']?> </td>
-                       <td align='center'>R$  <?=$produtos['preco']?> </td>
-                     </tr>
-                     <?php
-                   }
+                        <td align='center'><img class="img-fluid" style="width: 20%" src="<?=$urlImg?>"> </td>
+                        <td align='center'><?=$produtos['nome']?> </td>
+                        <td align='center'><?=$produtos['descricao']?></td>
+                        <td align='center'> <?=$produtos['marca']?> </td>
+                        <td align='center'>R$  <?=$produtos['preco']?> </td>
+                      </tr>
+                      <?php
+                    }
 
-                 }
+                  }
 
-                 ?>
-               </tbody>
-               <tfoot>
-                <tr>
-                  <th>Adicionar ao carrinho</th>
-                  <th>Imagem</th>
-                  <th>Nome</th>
-                  <th>Descrição</th>
-                  <th>Marca</th>
-                  <th>Preço</th>
-                </tr>
-              </tfoot>
-            </table>
+                  ?>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th>Adicionar ao carrinho</th>
+                    <th>Imagem</th>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th>Marca</th>
+                    <th>Preço</th>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+            <!-- /.box-body -->
           </div>
-          <!-- /.box-body -->
+          <!-- /.box -->
         </div>
-        <!-- /.box -->
+        <!-- /.col -->
       </div>
-      <!-- /.col -->
-    </div>
-    <!-- /.row -->
-  </section>
-  <!-- /.content -->
-</div>
-<!-- /.content-wrapper -->
-<footer class="main-footer">
-  <div class="pull-right hidden-xs">
-    <b>Version</b> 2.4.13
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
   </div>
-  <strong>Copyright &copy; 2014-2019 <a href="https://adminlte.io">AdminLTE</a>.</strong> All rights
-  reserved.
-</footer>
+  <!-- /.content-wrapper -->
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Version</b> 2.4.13
+    </div>
+    <strong>Copyright &copy; 2014-2019 <a href="https://adminlte.io">AdminLTE</a>.</strong> All rights
+    reserved.
+  </footer>
 
-<div class="control-sidebar-bg"></div>
+  <div class="control-sidebar-bg"></div>
 </div>
 
 <script src="../bower_components/jquery/dist/jquery.min.js"></script>
@@ -366,66 +384,74 @@ if(!empty($_SESSION['login'])){
         </button>
       </div>
       <div class="modal-body">
-        <form>
-          <div style="position: relative; left: 21%; height:100px;   background-color:red; width: 57.5%;">
+        <form method="post">
+          <div align="center">
+            <select class="form-control form-control-lg" name="produto">
 
+              <option value="Xerox">Xerox</option>
+              <option value="Impressão">Impressão</option>
+              <option value="Plastificação">Plastificação</option>
+            </select>
+
+            <p align="center" style="margin-top: 4px;"><input class="form-control form-control-lg" type="number" name="num"></p>
+            <input type="text" name="valor" >
           </div>
-          <p align="center"><input type="number" name="num"></p>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            <input type="submit" class="btn btn-success" name="acao" value="Registrar">
+          </div>
         </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-        <button type="button" class="btn btn-primary">Salvar mudanças</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- modal carrinho -->
-<div class="modal fade" id="modalVender" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title " align="center">Vender produto</h3>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-          <span aria-hidden="true">&times;</span>
+  <!-- modal carrinho -->
+  <div class="modal fade" id="modalVender" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title " align="center">Vender produto</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+            <span aria-hidden="true">&times;</span>
 
-        </button>
-      </div>
-      <div class="modal-body">
-        <form method="post" enctype="multipart/form-data">
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="post" enctype="multipart/form-data">
 
 
-          <div class="form-group">
-            <div class="text-center">
-              <img id="imgProd" class="img rounded-circle" src="../../imagens/icone-produtos.png" style="width:15%; cursor:pointer" title="Clique para adicionar uma foto"/>
-            </div>
             <div class="form-group">
-              <input id="fotoProd" name="teste2" class="form-control" type="file" accept="image/*" style="display:none;">
-              <br>
-              <label for="produto">Nome</label>
-              <input readonly style="cursor: pointer;" type="text" class="form-control" name="produto" id="produto">
-              <label for="preco">Preço</label>
-              <input readonly style="cursor: pointer;" type="text" class="form-control" name="preco" id="preco">
-              <label for="marca">Quantidade</label>
-              <input type="number" class="form-control" name="qtd" id="qtdMax" >
-              <input type="hidden" name="qtdProd" id="qtdProd">
-              <input type="hidden" name="idProd" id="idProd">
+              <div class="text-center">
+                <img id="imgProd" class="img rounded-circle" src="../../imagens/icone-produtos.png" style="width:15%; cursor:pointer" title="Clique para adicionar uma foto"/>
+              </div>
+              <div class="form-group">
+                <input id="fotoProd" name="teste2" class="form-control" type="file" accept="image/*" style="display:none;">
+                <br>
+                <label for="produto">Nome</label>
+                <input readonly style="cursor: pointer;" type="text" class="form-control" name="produto" id="produto">
+                <label for="preco">Preço</label>
+                <input readonly style="cursor: pointer;" type="text" class="form-control" name="preco" id="preco">
+                <label for="marca">Quantidade</label>
+                <input type="number" class="form-control" name="qtd" id="qtdMax" >
+                <input type="hidden" name="qtdProd" id="qtdProd">
+                <input type="hidden" name="idProd" id="idProd">
+
+              </div>
+
+
 
             </div>
-
-
-
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+              <input type="submit" class="btn btn-success" name="acao" value="Vender">
+            </form>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-            <input type="submit" class="btn btn-success" name="acao" value="Vender">
-          </form>
         </div>
       </div>
     </div>
-  </div>
-  <script type="text/javascript">
+
+    <script type="text/javascript">
      $(document).ready(function () {
        $('#imgProd').click(function () {
         $('#fotoProd').click();
@@ -445,7 +471,7 @@ if(!empty($_SESSION['login'])){
       });
      });
    </script>
- 
-</body>
-</html>
-<?php } else{ header("location:../index.php"); } ?>
+
+ </body>
+ </html>
+ <?php } else{ header("location:../index.php"); } ?>

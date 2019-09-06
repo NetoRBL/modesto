@@ -165,6 +165,11 @@ if(!empty($_SESSION['login'])){
               <i class="glyphicon glyphicon-pencil"></i> <span>Produtos</span>
             </a>
           </li>
+           <li>
+          <a href="pages/relatorio.php">
+            <i class="glyphicon glyphicon-print"></i> <span>Serviços</span>
+          </a>
+        </li>
         </ul>
       </section>
       <!-- /.sidebar -->
