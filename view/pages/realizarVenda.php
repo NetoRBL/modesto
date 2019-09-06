@@ -22,7 +22,6 @@ $qtd = isset($_POST["qtd"])?$_POST["qtd"]:"";
 $data = date("d/m/Y");
 $hora = date("H:i");
 $max = isset($_POST["cId"])?$_POST["cId"]:"";
-var_dump($max);
 
 if(isset($_POST['deslogar'])){
   if($_POST['deslogar']=="Sim"){
@@ -81,7 +80,13 @@ if(!empty($_SESSION['login'])){
     }
   </style>
   <script type="text/javascript">
-   function trocarCampos(produto,preco,qtd) {
+   function trocarCampos(imagem,produto,preco,qtd) {
+    if (imagem == "") {
+      var urlImagem = "../../imagens/icone-produtos.png";
+    }else{
+      var urlImagem = "../dist/img/img_produtos/" + imagem;
+    }
+    $("#imgProd").attr("src", urlImagem);
     $("input#produto").val(produto);
     $("input#preco").val(preco);
     $("input#qtdMax").attr("max", qtd);
@@ -218,6 +223,12 @@ if(!empty($_SESSION['login'])){
                     <?php
 
                     foreach ($lista_produtos as $produtos) {
+                      if (empty($produtos["imagem"])) {
+                        $urlImg = "../../imagens/icone-produtos.png";
+                      }else{
+                        $urlImg = "../dist/img/img_produtos/" . $produtos["imagem"];
+                      }
+
                       if ($produtos["qtd"] > 0) {
 
 
@@ -225,8 +236,8 @@ if(!empty($_SESSION['login'])){
 
                         <tr>
                           
-                         <td align='center'><button  class='btn btn-success' onclick="trocarCampos('<?=$produtos['nome']?>','<?=$produtos['preco']?>','<?=$produtos['qtd']?>')" data-toggle="modal" data-target="#modalVender">+</button></td>
-                         <td align='center'><?=$produtos['imagem']?> </td>
+                         <td align='center'><button  class='btn btn-success' onclick="trocarCampos('<?=$produtos['imagem']?>','<?=$produtos['nome']?>','<?=$produtos['preco']?>','<?=$produtos['qtd']?>')" data-toggle="modal" data-target="#modalVender">+</button></td>
+                         <td align='center'><img class="img-fluid" style="width: 20%" src="<?=$urlImg?>"> </td>
                          <td align='center'><?=$produtos['nome']?></td>
                          <td align='center'><?=$produtos['descricao']?></td>
                          <td align='center'> <?=$produtos['marca']?> </td>
@@ -329,15 +340,6 @@ if(!empty($_SESSION['login'])){
 <!-- /.sidebar -->
 
 
-<footer class="main-footer">
-  <div class="pull-right hidden-xs">
-    <b>Version</b> 2.4.13
-  </div>
-  <strong>Copyright &copy; 2014-2019 <a href="https://adminlte.io">AdminLTE</a>.</strong> All rights
-  reserved.
-</footer>
-
-
 <div class="control-sidebar-bg"></div>
 </div>
 
@@ -390,10 +392,10 @@ if(!empty($_SESSION['login'])){
 
           <div class="form-group">
             <div class="text-center">
-              <img id="teste" class="img rounded-circle" src="../../imagens/default-avatar.png" style="width: 90px; height: 90px; cursor:pointer" title="Clique para adicionar uma foto"/>
+              <img id="imgProd" class="img rounded-circle" src="../../imagens/icone-produtos.png" style="width:15%; cursor:pointer" title="Clique para adicionar uma foto"/>
             </div>
             <div class="form-group">
-              <input id="teste2" name="teste2" class="form-control" type="file" accept="image/*" style="display:none;">
+              <input id="fotoProd" name="teste2" class="form-control" type="file" accept="image/*" style="display:none;">
               <br>
               <label for="produto">Nome</label>
               <input readonly style="cursor: pointer;" type="text" class="form-control" name="produto" id="produto">
@@ -409,13 +411,32 @@ if(!empty($_SESSION['login'])){
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-            <input type="submit" name="acao" value="Vender">
+            <input type="submit" class="btn btn-success" name="acao" value="Vender">
           </form>
         </div>
       </div>
     </div>
   </div>
-
+  <script type="text/javascript">
+     $(document).ready(function () {
+       $('#imgProd').click(function () {
+        $('#fotoProd').click();
+      });
+       $("#fotoProd").on('change', function () {
+        if (typeof (FileReader) != "undefined") {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            $('#imgProd').attr('src', e.target.result);
+          }
+          var file = $(this)[0].files[0];
+          if (typeof (file) != "undefined")
+            reader.readAsDataURL($(this)[0].files[0]);
+        } else {
+          alert("Este navegador nao suporta FileReader.");
+        }
+      });
+     });
+   </script>
 </body>
 </html>
 <?php } else{ header("location:../index.php"); } ?>
