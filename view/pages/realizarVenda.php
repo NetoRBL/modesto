@@ -30,7 +30,6 @@ if(isset($_POST['deslogar'])){
     unset($_SESSION['login']);
     session_destroy();
   }
-
 }
 if (isset($_POST["acao"]) and $_POST["acao"]=="Vender") {
   $venda->setProduto($produto);    
