@@ -228,6 +228,11 @@ if(!empty($_SESSION['login'])){
             <i class="glyphicon glyphicon-pencil"></i> <span>Produtos</span>
           </a>
         </li>
+        <li>
+          <a href="relatorio.php">
+            <i class="glyphicon glyphicon-pencil"></i> <span>Relatorio</span>
+          </a>
+        </li>
       </ul>
 
 

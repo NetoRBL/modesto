@@ -107,14 +107,14 @@
             </ul>
           </li>
         </ul>
-
       </div>
     </nav>
   </header>
-  
+  <!-- Left side column. contains the logo and sidebar -->
   <aside class="main-sidebar">
-    <    <section class="sidebar">
-     
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+      <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="pull-left image">
           <img src="../dist/img/user9 160x160.jpg" class="img-circle" alt="User Image">
@@ -138,7 +138,7 @@
             <span>Realizar Venda</span>
           </a>
         </li>
-        <li class="active treeview">
+        <li>
           <a href="vendas.php">
             <i class="glyphicon glyphicon-shopping-cart"></i> <span>Vendas</span>
           </a>
@@ -146,6 +146,11 @@
         <li>
           <a href="produtos.php">
             <i class="glyphicon glyphicon-pencil"></i> <span>Produtos</span>
+          </a>
+        </li>
+         <li class="active treeview">
+          <a href="relatorio.php">
+            <i class="glyphicon glyphicon-file"></i> <span>Relatorio</span>
           </a>
         </li>
       </ul>
@@ -163,9 +168,6 @@
       <ol class="breadcrumb">
         <li><a href="vendas.php"><i class="glyphicon glyphicon-shopping-cart"></i> Vendas</a></li>
       </ol>
-      <div align="right">
-                  <button id="btnImpress" class="btn btn-primary" data-toggle="modal" data-target="#modalRelatorio">Relatorio</button>
-                </div>
     </section>
 
     <!-- Main content -->
@@ -355,32 +357,6 @@
     });
 
   </script>
-     <div class="modal fade" id="modalRelatorio" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-sm" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h3 class="modal-title " align="center">Relatorio</h3>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                    <span aria-hidden="true">&times;</span>
-
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <form method="post">
-                    <div align="center">
-                    <p>Selecione a data desejada</p>
-                    <input type="date" name="data" class="form-control cep-mask">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="margin-right: 50%;">Fechar</button>                    
-                    <input type="hidden" class="form-control" name="dId" id="dId">
-                    <input type="submit" class="btn btn-danger" name="acao" value="Comfirma">
-                    </div>
-                  </form>
-                </div>
-
-
-              </div>
-            </div>
-          </div>
 </body>
 </html>
 <?php } else{ header("location:../index.php"); } ?>
