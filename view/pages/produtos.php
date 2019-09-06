@@ -14,7 +14,7 @@ $nome = isset($_POST["nome"])?$_POST["nome"]:"";
 $preco = isset($_POST["preco"])?$_POST["preco"]:"";
 $descricao = isset($_POST["descricao"])?$_POST["descricao"]:"";
 $marca = isset($_POST["marca"])?$_POST["marca"]:"";
-$imagem = isset($_POST["imagem"])?$_POST["imagem"]:"";
+$imagem = isset($_FILES["imagem"]["name"])?$_FILES["imagem"]["name"]:"";
 $qtd = isset($_POST["qtd"])?$_POST["qtd"]:"";
 
 $nNome = isset($_POST["nNome"])?$_POST["nNome"]:"";
@@ -41,7 +41,13 @@ if (isset($_POST["acao"]) and $_POST["acao"]=="Cadastrar") {
   $produto->setMarca($marca);
   $produto->setPreco($preco);
   $produto->setQtd($qtd);
-  $produto->setImagem($imagem);
+  
+  $nome_tipo = explode(".", $_FILES['imagem']['name']);
+  $tipo = $nome_tipo[1];
+  $novo_nome = sha1(microtime()) . "." . $tipo;
+  move_uploaded_file($_FILES['imagem']['tmp_name'], "../dist/img/img_produtos/".$novo_nome);
+  $produto->setImagem($novo_nome);
+  
   $produtoDAO->cadastrar_produto($produto);
 
 }
@@ -258,7 +264,7 @@ if(!empty($_SESSION['login'])){
               foreach ($lista_produtos as $produtos) {
                 ?>
                 <tr>
-                  <td align='center'><?=$produtos['imagem']?> </td>
+                  <td align='center'><img class="img-fluid" style="width: 20%" src="../dist/img/img_produtos/<?=$produtos['imagem']?>"> </td>
                   <td align='center'><?=$produtos['nome']?> </td>
                   <td align='center'><?=$produtos['descricao']?></td>
                   <td align='center'> <?=$produtos['marca']?> </td>
@@ -459,10 +465,10 @@ if(!empty($_SESSION['login'])){
 
                     <div class="form-group">
                       <div class="text-center">
-                        <img id="teste" name="imagem" class="img rounded-circle" src="../../imagens/icone-produtos.png" style="width:15%; cursor:pointer" title="Clique para adicionar uma foto"/>
+                        <img id="teste" name="teste2" class="img rounded-circle" src="../../imagens/icone-produtos.png" style="width:15%; cursor:pointer" title="Clique para adicionar uma foto"/>
                       </div>
                       <div class="form-group">
-                        <input id="teste2" name="teste2" class="form-control" type="file" accept="image/*" style="display:none;">
+                        <input id="teste2" name="imagem" class="form-control" type="file" accept="image/*" style="display:none;">
                         <br>
                         <label for="nome">Nome</label>
                         <input type="text" class="form-control" name="nome">
