@@ -46,6 +46,28 @@ class vendaDAO{
 		}
 	}
 
+	function listar_relatorio_vendas($mes, $ano){
+		try{
+			if ($mes < 10) {
+				$data = '%/0' . $mes . '/' . $ano;
+			}else{
+				$data = '%/' . $mes . '/' . $ano;
+			}
+			
+
+			require_once("../config/conexao.php");
+			$sql ="SELECT * FROM venda WHERE  data LIKE :data";
+			$pdo = new PDO('mysql:host=localhost;dbname=modesto;charset=utf8', 'root', '');
+			$listar = $pdo->prepare($sql);
+			$listar->bindValue(':data', $data);
+			$listar->execute();
+			$resultado = $listar->fetchAll(PDO::FETCH_ASSOC);
+			return $resultado;
+		} catch(PDOException $e){
+			echo 'Erro:' . $e->getMessage();
+		}
+	}
+
 	function listar_ganho(){
 		try{
 

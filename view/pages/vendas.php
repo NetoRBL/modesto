@@ -366,10 +366,31 @@
                   </button>
                 </div>
                 <div class="modal-body">
-                  <form method="post">
+                  <form method="post" action="relatorioView.php" target="_blank">
                     <div align="center">
-                    <p>Selecione a data desejada</p>
-                    <input type="date" name="data" class="form-control cep-mask">
+                    <p>Selecione o mês e o ano desejado</p>
+                    <select name="mes">
+                      <option value="1">Janeiro</option>
+                      <option value="2">Fevereiro</option>
+                      <option value="3">Março</option>
+                      <option value="4">Abril</option>
+                      <option value="5">Maio</option>
+                      <option value="6">Junho</option>
+                      <option value="7">Julho</option>
+                      <option value="8">Agosto</option>
+                      <option value="9">Setembro</option>
+                      <option value="10">Outubro</option>
+                      <option value="11">Novembro</option>
+                      <option value="12">Dezembro</option>
+                    </select>
+                    <select name="ano">
+                      <?php
+                        
+                        for ($i = date("Y"); $i >= 2019 ; $i--) { 
+                          echo "<option value='" . $i . "'>" . $i . "</option>";
+                        }
+                      ?>
+                    </select>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" style="margin-right: 50%;">Fechar</button>                    
                     <input type="hidden" class="form-control" name="dId" id="dId">
                     <input type="submit" class="btn btn-danger" name="acao" value="Comfirma">
