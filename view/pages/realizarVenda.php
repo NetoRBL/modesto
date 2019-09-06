@@ -256,7 +256,7 @@ if(!empty($_SESSION['login'])){
                       ?>
                       <tr>
                         <td align='center'><button disabled class='btn btn-danger' style="cursor: pointer;" title="Produto em falta">+</button></td>
-                       <td align='center'><?=$produtos['imagem']?> </td>
+                       <td align='center'><img class="img-fluid" style="width: 20%" src="<?=$urlImg?>"> </td>
                        <td align='center'><?=$produtos['nome']?> </td>
                        <td align='center'><?=$produtos['descricao']?></td>
                        <td align='center'> <?=$produtos['marca']?> </td>
@@ -316,6 +316,8 @@ if(!empty($_SESSION['login'])){
 <script type="text/javascript" src="../DataTables/datatables.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../dist/js/demo.js"></script>
+<!-- ajax -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <!-- page script -->
 <script>
   $('#meuModal').on('shown.bs.modal', function () {
