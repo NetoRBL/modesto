@@ -406,6 +406,7 @@ if(!empty($_SESSION['login'])){
 
                   </button>
                 </div>
+                <p></p>
                 <div class="text-center">
                         <img id="nImagem" name="teste3" class="img rounded-circle" src="../../imagens/icone-produtos.png" style="width:15%; cursor:pointer" title="Clique para adicionar uma foto"/>
                       </div>
@@ -414,7 +415,7 @@ if(!empty($_SESSION['login'])){
 
 
                     <div class="form-group">
-                      <input id="teste3" name="imagem" class="form-control" type="file" accept="image/*" style="display:none;">
+                      <input id="teste4" name="imagem" class="form-control" type="file" accept="image/*" style="display:none;">
                       <label for="nome">Nome</label>
                       <input type="text" class="form-control" name="nNome" id="nome" >
                       <label for="preco">Preço</label>
@@ -524,6 +525,23 @@ if(!empty($_SESSION['login'])){
                   var reader = new FileReader();
                   reader.onload = function (e) {
                     $('#teste').attr('src', e.target.result);
+                  }
+                  var file = $(this)[0].files[0];
+                  if (typeof (file) != "undefined")
+                    reader.readAsDataURL($(this)[0].files[0]);
+                } else {
+                  alert("Este navegador nao suporta FileReader.");
+                }
+              });
+
+               $('#nImagem').click(function () {
+                $('#teste4').click();
+              });
+               $("#teste4").on('change', function () {
+                if (typeof (FileReader) != "undefined") {
+                  var reader = new FileReader();
+                  reader.onload = function (e) {
+                    $('#nImagem').attr('src', e.target.result);
                   }
                   var file = $(this)[0].files[0];
                   if (typeof (file) != "undefined")
