@@ -164,10 +164,10 @@ if(!empty($_SESSION['login'])){
       <section class="sidebar">
         <div class="user-panel">
           <div class="pull-left image">
-            <img src="../dist/img/user9 160x160.jpg" class="img-circle" alt="User Image">
+            <img src="../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
           </div>
           <div class="pull-left info">
-            <p>Tonin Tornado</p>
+            <p>Fulano de Tal</p>
             <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
           </div>
         </div>
@@ -334,7 +334,7 @@ if(!empty($_SESSION['login'])){
 <script type="text/javascript" src="../DataTables/datatables.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../dist/js/demo.js"></script>
-<!-- ajax -->
+
 <!-- page script -->
 <script>
   $('#meuModal').on('shown.bs.modal', function () {
