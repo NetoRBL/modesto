@@ -165,11 +165,11 @@ if(!empty($_SESSION['login'])){
               <i class="glyphicon glyphicon-pencil"></i> <span>Produtos</span>
             </a>
           </li>
-           <li>
-          <a href="pages/relatorio.php">
-            <i class="glyphicon glyphicon-print"></i> <span>Serviços</span>
-          </a>
-        </li>
+          <li>
+            <a href="pages/relatorio.php">
+              <i class="glyphicon glyphicon-print"></i> <span>Serviços</span>
+            </a>
+          </li>
         </ul>
       </section>
       <!-- /.sidebar -->
@@ -210,7 +210,7 @@ if(!empty($_SESSION['login'])){
             <!-- small box -->
             <div class="small-box bg-green">
               <div class="inner">
-                
+
                 <h3>R$ <?=number_format($caixa["caixa"], 2, '.', '')?></h3>
                 <p><h4>Caixa</h4></p>
 
@@ -255,21 +255,21 @@ if(!empty($_SESSION['login'])){
           <!-- Left col -->
           <section class="col-lg-7 connectedSortable">
             <!-- AREA CHART -->
-          <div class="box box-primary">
-            <div class="box-header with-border">
-              <h3 class="box-title">Gráfico de ganho mensal</h3>
+            <div class="box box-primary">
+              <div class="box-header with-border">
+                <h3 class="box-title">Gráfico de ganho mensal</h3>
 
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
+                <div class="box-tools pull-right">
+                  <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                  </button>
+                </div>
               </div>
+              <div class="box-body chart-responsive">
+                <div class="chart" id="revenue-chart" style="height: 300px;"></div>
+              </div>
+              <!-- /.box-body -->
             </div>
-            <div class="box-body chart-responsive">
-              <div class="chart" id="revenue-chart" style="height: 300px;"></div>
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
+            <!-- /.box -->
           </section>
 
           <!-- right col -->
@@ -365,16 +365,16 @@ if(!empty($_SESSION['login'])){
     element: 'revenue-chart',
     resize: true,
     data: [
-      {y: '2011 Q1', item1: 0, item2: 0},
-      {y: '2011 Q2', item1: 2778, item2: 2294},
-      {y: '2011 Q3', item1: 4912, item2: 1969},
-      {y: '2011 Q4', item1: 3767, item2: 3597},
-      {y: '2012 Q1', item1: 6810, item2: 1914},
-      {y: '2012 Q2', item1: 5670, item2: 4293},
-      {y: '2012 Q3', item1: 4820, item2: 3795},
-      {y: '2012 Q4', item1: 15073, item2: 5967},
-      {y: '2013 Q1', item1: 10687, item2: 4460},
-      {y: '2013 Q2', item1: 8432, item2: 5713}
+    {y: '2011 Q1', item1: 0, item2: 0},
+    {y: '2011 Q2', item1: 2778, item2: 2294},
+    {y: '2011 Q3', item1: 4912, item2: 1969},
+    {y: '2011 Q4', item1: 3767, item2: 3597},
+    {y: '2012 Q1', item1: 6810, item2: 1914},
+    {y: '2012 Q2', item1: 5670, item2: 4293},
+    {y: '2012 Q3', item1: 4820, item2: 3795},
+    {y: '2012 Q4', item1: 15073, item2: 5967},
+    {y: '2013 Q1', item1: 10687, item2: 4460},
+    {y: '2013 Q2', item1: 8432, item2: 5713}
     ],
     xkey: 'y',
     ykeys: ['item1', 'item2'],
@@ -384,47 +384,33 @@ if(!empty($_SESSION['login'])){
   });
 </script>
 
-<div class="modal fade" id="modalCadastrar" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-lg" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h3 class="modal-title " align="center">Cadastrar produto</h3>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                    <span aria-hidden="true">&times;</span>
+<div class="modal fade" id="modalExemplo" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title " align="center">Quantidade de produtos</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+          <span aria-hidden="true">&times;</span>
 
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <div class="content">
-                    <form method="post" enctype="multipart/form-data">
-
-
-                    <div class="form-group">
-                      <div class="text-center">
-                        <img id="teste" name="teste2" class="img rounded-circle" src="../../imagens/icone-produtos.png" style="width:15%; cursor:pointer" title="Clique para adicionar uma foto"/>
-                      </div>
-                      <div class="form-group">
-                        <input id="teste2" name="imagem" class="form-control" type="file" accept="image/*" style="display:none;">
-                        <br>
-                        <input type="hidden" name="nImagem" id="nImagem">
-                        <label for="nome">Nome</label>
-                        <input type="text" class="form-control" name="nome">
-                        <label for="preco">Preço</label>
-                        <input type="text" class="form-control" name="preco" >
-
-                      </div>
-
-
-
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                      <input type="submit" class="btn btn-success" name="acao" value="Cadastrar">
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post">
+          <div align="center">
+            <input type="valors" name="">
+            <input type="number" name="valor_atual">
+            <input type="button" name="saque" value="Retirada">
+            <input type="button" name="saque" value="">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            <input type="submit" class="btn btn-success" name="acao" value="Registrar">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
 

@@ -113,7 +113,7 @@
   </header>
   
   <aside class="main-sidebar">
-    <    <section class="sidebar">
+    <section class="sidebar">
      
       <div class="user-panel">
         <div class="pull-left image">

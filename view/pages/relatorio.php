@@ -264,7 +264,7 @@ if(!empty($_SESSION['login'])){
           <table id="myTable" class="table table-striped table-bordered" >
             <thead>
               <tr>
-                <th>Imagem</th>
+              
                 <th>Nome</th>
                 <th>Preço</th>
            
@@ -275,20 +275,20 @@ if(!empty($_SESSION['login'])){
             <tbody>
               <?php
               foreach ($listar_servicos as $servico) {
-                if (empty($servico["imagem"])) {
-                  $urlImg = "../../imagens/icone-produtos.png";
-                }else{
-                  $urlImg = "../dist/img/img_produtos/" . $servico["imagem"];
-                }
+                // if (empty($servico["imagem"])) {
+                //   $urlImg = "../../imagens/icone-produtos.png";
+                // }else{
+                //   $urlImg = "../dist/img/img_produtos/" . $servico["imagem"];
+                // }
                 ?>
                 <tr>
-                  <td align='center'><img class="img-fluid" style="width: 20%" src="<?=$urlImg?>"> </td>
+                  <!--<td align='center'><img class="img-fluid" style="width: 15%;" src="<?=$urlImg?>"> </td>-->
                   <td align='center'><?=$servico['nome']?> </td>
                   <td align='center'>R$  <?=$servico['preco']?> </td>
               
                   <td align='center'><button class='btn btn-danger' data-toggle="modal" data-target="#modalDelete" onclick="trocarCamposDelete('<?=$servico['id']?>')"><i class="fa fa-trash-o"></i></button></td>
 
-                  <td><button id="btnImpress" class="btn btn-primary" data-toggle="modal" data-target="#modalEditar" onclick="trocarCampos('<?=$servico['imagem']?>','<?=$servico['nome']?>','<?=$servico['preco']?>','<?=$servico['id']?>')"><i class="fa fa-pencil-square-o"></i></button></td>
+                  <td align='center'><button id="btnImpress" class="btn btn-primary" data-toggle="modal" data-target="#modalEditar" onclick="trocarCampos('<?=$servico['imagem']?>','<?=$servico['nome']?>','<?=$servico['preco']?>','<?=$servico['id']?>')"><i class="fa fa-pencil-square-o"></i></button></td>
                 </tr>
 
                 <?php   
@@ -297,7 +297,7 @@ if(!empty($_SESSION['login'])){
             </tbody>
             <tfoot>
               <tr>
-                <th>Imagem</th>
+      
                 <th>Nome</th>
                 <th>Preço</th>
                 
