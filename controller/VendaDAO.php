@@ -45,6 +45,39 @@ class vendaDAO{
 			echo 'Erro:' . $e->getMessage();
 		}
 	}
+	function caixa(){
+		try{
+			$data = date('d') . '/' . date('m') . '/' . date('Y');
+
+			require_once("../config/conexao.php");
+			$sql ="SELECT SUM(valor) as caixa FROM venda WHERE data = :data";
+			$pdo = new PDO('mysql:host=localhost;dbname=modesto;charset=utf8', 'root', '');
+			$listar = $pdo->prepare($sql);
+			$listar->bindValue(':data', $data);
+			$listar->execute();
+			$resultado = $listar->fetch(PDO::FETCH_ASSOC);
+			return $resultado;
+		} catch(PDOException $e){
+			echo 'Erro:' . $e->getMessage();
+		}
+	}
+
+	function listar_tudo(){
+		try{
+			$data = date('d') . '/' . date('m') . '/' . date('Y');
+
+			require_once("../config/conexao.php");
+			$sql ="SELECT SUM(valor) as caixa FROM venda WHERE data = :data";
+			$pdo = new PDO('mysql:host=localhost;dbname=modesto;charset=utf8', 'root', '');
+			$listar = $pdo->prepare($sql);
+			$listar->bindValue(':data', $data);
+			$listar->execute();
+			$resultado = $listar->fetch(PDO::FETCH_ASSOC);
+			return $resultado;
+		} catch(PDOException $e){
+			echo 'Erro:' . $e->getMessage();
+		}
+	}
 
 	function listar_relatorio_vendas($mes, $ano){
 		try{
@@ -131,6 +164,20 @@ class vendaDAO{
 			$inserir->bindValue(':tipo',$venda->getTipo());
 			$inserir->execute();
 			header("location:realizarVenda.php");
+		} catch(PDOException $e){
+			echo 'Erro:' . $e->getMessage();
+		}
+	}
+	function pegar_servico($id){
+		try{
+			require_once("../../config/conexao.php");
+			$sql ="SELECT preco,nome FROM servico WHERE id = :id";
+			$pdo = new PDO('mysql:host=localhost;dbname=modesto;charset=utf8', 'root', '');
+			$pegar = $pdo->prepare($sql);
+			$pegar->bindValue(':id', $id);
+			$pegar->execute();
+			$resultado = $pegar->fetch(PDO::FETCH_ASSOC);
+			return $resultado;
 		} catch(PDOException $e){
 			echo 'Erro:' . $e->getMessage();
 		}

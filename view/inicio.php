@@ -9,7 +9,7 @@ $vendaDAO = new vendaDAO();
 $ganho = $vendaDAO->listar_ganho();
 $ganho_passado = $vendaDAO->listar_ganho_passado();
 $ganho_impressoes = $vendaDAO->listar_ganho_impressoes();
-
+$caixa = $vendaDAO->caixa();
 if(isset($_POST['deslogar'])){
   if($_POST['deslogar']=="Sim"){
     unset($_SESSION['login']);
@@ -206,13 +206,13 @@ if(!empty($_SESSION['login'])){
             </div>
           </div>
           <!-- ./col -->
-          <div class="col-lg-3 col-xs-6">
+          <div class="col-lg-3 col-xs-6" style="cursor: pointer; ">
             <!-- small box -->
             <div class="small-box bg-green">
               <div class="inner">
-                <h3>53<sup style="font-size: 20px">%</sup></h3>
-
-                <p><h4>Marca mais vendida</h4></p>
+                
+                <h3>R$ <?=number_format($caixa["caixa"], 2, '.', '')?></h3>
+                <p><h4>Caixa</h4></p>
 
               </div>
               <div class="icon">
@@ -221,7 +221,7 @@ if(!empty($_SESSION['login'])){
             </div>
           </div>
           <!-- ./col -->
-          <div class="col-lg-3 col-xs-6">
+          <div class="col-lg-3 col-xs-6" data-toggle="modal" data-target="#modalCadastrar">
             <!-- small box -->
             <div class="small-box bg-yellow">
               <div class="inner">
@@ -327,7 +327,7 @@ if(!empty($_SESSION['login'])){
  <script>
   $.widget.bridge('uibutton', $.ui.button);
 </script>
-<!-- Bootstrap 3.3.7 -->
+
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- Morris.js charts -->
 <script src="bower_components/raphael/raphael.min.js"></script>
@@ -383,6 +383,48 @@ if(!empty($_SESSION['login'])){
     hideHover: 'auto'
   });
 </script>
+
+<div class="modal fade" id="modalCadastrar" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h3 class="modal-title " align="center">Cadastrar produto</h3>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="content">
+                    <form method="post" enctype="multipart/form-data">
+
+
+                    <div class="form-group">
+                      <div class="text-center">
+                        <img id="teste" name="teste2" class="img rounded-circle" src="../../imagens/icone-produtos.png" style="width:15%; cursor:pointer" title="Clique para adicionar uma foto"/>
+                      </div>
+                      <div class="form-group">
+                        <input id="teste2" name="imagem" class="form-control" type="file" accept="image/*" style="display:none;">
+                        <br>
+                        <input type="hidden" name="nImagem" id="nImagem">
+                        <label for="nome">Nome</label>
+                        <input type="text" class="form-control" name="nome">
+                        <label for="preco">Preço</label>
+                        <input type="text" class="form-control" name="preco" >
+
+                      </div>
+
+
+
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                      <input type="submit" class="btn btn-success" name="acao" value="Cadastrar">
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
 </body>
 </html>
 

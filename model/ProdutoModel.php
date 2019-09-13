@@ -1,7 +1,7 @@
 <?php
 
 	class Produto {
-
+		private $tipo;
 		private $id;
 		private $cod_barra;
 		private $nome;
@@ -11,6 +11,12 @@
 		private $qtd;
 		private $imagem;
 
+		public function setTipo($tipo){
+			$this->tipo = $tipo;
+		}
+		public function getTipo(){
+			return $this->tipo;
+		}
 		public function setId($id){
 			$this->id = $id;
 		}

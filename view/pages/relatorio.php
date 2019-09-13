@@ -3,45 +3,37 @@ session_start();
 
 include_once("../../controller/AdminDAO.php");
 include_once("../../model/AdminModel.php");
-include_once("../../model/ProdutoModel.php");
-include_once("../../controller/ProdutoDAO.php");
+include_once("../../model/ServicoModel.php");
+include_once("../../controller/ServicoDAO.php");
 
-$produto = new Produto();
-$produtoDAO = new produtoDAO();
-$lista_produtos = $produtoDAO->listar_produtos();
+$servico = new Servico();
+$servicoDAO = new servicoDAO();
+$listar_servicos = $servicoDAO->listar_servicos();
 
 $nome = isset($_POST["nome"])?$_POST["nome"]:"";
 $preco = isset($_POST["preco"])?$_POST["preco"]:"";
-$descricao = isset($_POST["descricao"])?$_POST["descricao"]:"";
-$marca = isset($_POST["marca"])?$_POST["marca"]:"";
 $imagem = isset($_FILES["imagem"]["name"])?$_FILES["imagem"]["name"]:"";
 $qtd = isset($_POST["qtd"])?$_POST["qtd"]:"";
 
 $nNome = isset($_POST["nNome"])?$_POST["nNome"]:"";
 $nPreco = isset($_POST["nPreco"])?$_POST["nPreco"]:"";
-$nDescricao = isset($_POST["nDescricao"])?$_POST["nDescricao"]:"";
-$nMarca = isset($_POST["nMarca"])?$_POST["nMarca"]:"";
-$eImagem = isset($_FILES["eImagem"]["name"])?$_FILES["eImagem"]["name"]:"";
-$nQtd = isset($_POST["nQtd"])?$_POST["nQtd"]:"";
 
-if(isset($_POST['deslogar'])){
-  if($_POST['deslogar']=="Sim"){
-    unset($_SESSION['login']);
-    session_destroy();
-  }
-}
+$eImagem = isset($_FILES["eImagem"]["name"])?$_FILES["eImagem"]["name"]:"";
+
 if (isset($_POST["acao"]) and $_POST["acao"]=="Delete" and isset($_POST["dId"])) {
- $produto->setId($_POST["dId"]);
- $produtoDAO->apagar_produto($produto);
+ $servico->setId($_POST["dId"]);
+ $servicoDAO->apagar_servico($servico);
 }
 
 if (isset($_POST["acao"]) and $_POST["acao"]=="Cadastrar") {
-  $produto->setNome($nome);    
-  $produto->setDescricao($descricao);
-  $produto->setMarca($marca);
-  $produto->setPreco($preco);
-  $produto->setQtd($qtd);
-  
+  $servico->setNome($nome);    
+  if (strstr($preco, ",")) {
+   $preco = str_replace(",",".",$preco);
+   $servico->setPreco($preco);
+  }
+  else{
+    $servico->setPreco($preco);
+  }
   $nome_tipo = explode(".", $_FILES['imagem']['name']);
   $tipo = $nome_tipo[1];
   $novo_nome = sha1(microtime()) . "." . $tipo;
@@ -49,18 +41,14 @@ if (isset($_POST["acao"]) and $_POST["acao"]=="Cadastrar") {
   if (empty($_FILES["imagem"]["name"])) {
     $novo_nome = "";
   }
-  $produto->setImagem($novo_nome);
-  
-  $produtoDAO->cadastrar_produto($produto);
-
+  $servico->setImagem($novo_nome);
+  $servicoDAO->cadastrar_servico($servico);
 }
 
 if (isset($_POST["acao"]) and $_POST["acao"]=="Editar" and isset($_POST["eId"])) {
-  $produto->setNome($nNome);    
-  $produto->setDescricao($nDescricao);
-  $produto->setMarca($nMarca);
-  $produto->setPreco($nPreco);
-  $produto->setQtd($nQtd);
+  $servico->setNome($nNome);    
+  $servico->setPreco($nPreco);
+  
   
   $nome_tipo = explode(".", $_FILES['eImagem']['name']);
   $tipo = $nome_tipo[1];
@@ -69,11 +57,18 @@ if (isset($_POST["acao"]) and $_POST["acao"]=="Editar" and isset($_POST["eId"]))
   if (empty($_FILES["eImagem"]["name"])) {
     $novo_nome = "";
   }
-  $produto->setImagem($novo_nome);
+  $servico->setImagem($novo_nome);
 
-  $produto->setId($_POST["eId"]);
-  $produtoDAO->editar_produto($produto);
+  $servico->setId($_POST["eId"]);
+  $servicoDAO->editar_servico($servico);
 
+}
+
+if(isset($_POST['deslogar'])){
+  if($_POST['deslogar']=="Sim"){
+    unset($_SESSION['login']);
+    session_destroy();
+  }
 }
 if(!empty($_SESSION['login'])){
   $log = $_SESSION['login'];
@@ -88,7 +83,7 @@ if(!empty($_SESSION['login'])){
     <title>AdminLTE 2 | Dashboard</title>
     <link rel="stylesheet" type="text/css" href="../DataTables/datatables.min.css"/>
     <script type="text/javascript">
-      function trocarCampos(imagem,nome,descricao,marca,preco,qtd,id) {
+      function trocarCampos(imagem,nome,preco,id) {
         if (imagem == "") {
           var urlImagem = "../../imagens/icone-produtos.png";
         }else{
@@ -96,10 +91,7 @@ if(!empty($_SESSION['login'])){
         }
         $("#nImagem").attr("src", urlImagem);
         $("input#nome").val(nome);
-        $("input#marca").val(marca);
-        $("input#descricao").val(descricao);
-        $("input#preco").val(preco);
-        $("input#eQtd").val(qtd);
+        $("input#preco").val(preco);  
         $("input#eId").val(id);
       }
       function trocarCamposDelete(id) {
@@ -267,40 +259,36 @@ if(!empty($_SESSION['login'])){
       <section class="content">
         <div class="box-body">
           <div class="pull-right" style="padding-bottom: 10px;">
-            <button class='btn btn-primary' data-toggle="modal" data-target="#modalCadastrar">Cadastrar produto</button>
+            <button class='btn btn-primary' data-toggle="modal" data-target="#modalCadastrar">Cadastrar serviços</button>
           </div>
           <table id="myTable" class="table table-striped table-bordered" >
             <thead>
               <tr>
                 <th>Imagem</th>
                 <th>Nome</th>
-                <th>Descrição</th>
-                <th>Marca</th>
                 <th>Preço</th>
-                <th>Quantidade</th>
+           
                 <th>Apagar</th>
                 <th>Editar</th>          
               </tr>
             </thead>
             <tbody>
               <?php
-              foreach ($lista_produtos as $produtos) {
-                if (empty($produtos["imagem"])) {
+              foreach ($listar_servicos as $servico) {
+                if (empty($servico["imagem"])) {
                   $urlImg = "../../imagens/icone-produtos.png";
                 }else{
-                  $urlImg = "../dist/img/img_produtos/" . $produtos["imagem"];
+                  $urlImg = "../dist/img/img_produtos/" . $servico["imagem"];
                 }
                 ?>
                 <tr>
                   <td align='center'><img class="img-fluid" style="width: 20%" src="<?=$urlImg?>"> </td>
-                  <td align='center'><?=$produtos['nome']?> </td>
-                  <td align='center'><?=$produtos['descricao']?></td>
-                  <td align='center'> <?=$produtos['marca']?> </td>
-                  <td align='center'>R$  <?=$produtos['preco']?> </td>
-                  <td align='center'><?=$produtos['qtd']?> </td>
-                  <td align='center'><button class='btn btn-danger' data-toggle="modal" data-target="#modalDelete" onclick="trocarCamposDelete('<?=$produtos['id']?>')"><i class="fa fa-trash-o"></i></button></td>
+                  <td align='center'><?=$servico['nome']?> </td>
+                  <td align='center'>R$  <?=$servico['preco']?> </td>
+              
+                  <td align='center'><button class='btn btn-danger' data-toggle="modal" data-target="#modalDelete" onclick="trocarCamposDelete('<?=$servico['id']?>')"><i class="fa fa-trash-o"></i></button></td>
 
-                  <td><button id="btnImpress" class="btn btn-primary" data-toggle="modal" data-target="#modalEditar" onclick="trocarCampos('<?=$produtos['imagem']?>','<?=$produtos['nome']?>','<?=$produtos['descricao']?>','<?=$produtos['marca']?>','<?=$produtos['preco']?>','<?=$produtos['qtd']?>','<?=$produtos['id']?>')"><i class="fa fa-pencil-square-o"></i></button></td>
+                  <td><button id="btnImpress" class="btn btn-primary" data-toggle="modal" data-target="#modalEditar" onclick="trocarCampos('<?=$servico['imagem']?>','<?=$servico['nome']?>','<?=$servico['preco']?>','<?=$servico['id']?>')"><i class="fa fa-pencil-square-o"></i></button></td>
                 </tr>
 
                 <?php   
@@ -311,10 +299,8 @@ if(!empty($_SESSION['login'])){
               <tr>
                 <th>Imagem</th>
                 <th>Nome</th>
-                <th>Descrição</th>
-                <th>Marca</th>
                 <th>Preço</th>
-                <th>Quantidade</th>
+                
                 <th>Apagar</th>
                 <th>Editar</th> 
               </tr>
@@ -434,12 +420,6 @@ if(!empty($_SESSION['login'])){
                       <input type="text" class="form-control" name="nNome" id="nome" >
                       <label for="preco">Preço</label>
                       <input type="text" class="form-control" name="nPreco" id="preco" >
-                      <label for="descricao">Descrição</label>
-                      <input type="text" class="form-control" name="nDescricao" id="descricao" >
-                      <label for="marca">Marca</label>
-                      <input type="text" class="form-control" name="nMarca" id="marca" >
-                      <label for="marca">Quantidade</label>
-                      <input type="number" class="form-control" name="nQtd" id="eQtd" >
                       <input type="hidden" name="eId" id="eId">
                     </div>
 
@@ -460,7 +440,7 @@ if(!empty($_SESSION['login'])){
             <div class="modal-dialog modal-sm" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h3 class="modal-title " align="center">Apagar produto</h3>
+                  <h3 class="modal-title " align="center">Apagar produto </h3>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
                     <span aria-hidden="true">&times;</span>
 
@@ -468,8 +448,9 @@ if(!empty($_SESSION['login'])){
                 </div>
                 <div class="modal-body">
                   <form method="post">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="margin-right: 50%;">Fechar</button>                    
                     <input type="hidden" class="form-control" name="dId" id="dId">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="margin-right: 50%;">Fechar</button>                    
+                    
                     <input type="submit" class="btn btn-danger" name="acao" value="Delete">
                   </form>
                 </div>
@@ -508,12 +489,6 @@ if(!empty($_SESSION['login'])){
                         <input type="text" class="form-control" name="nome">
                         <label for="preco">Preço</label>
                         <input type="text" class="form-control" name="preco" >
-                        <label for="descricao">Descrição</label>
-                        <input type="text" class="form-control" name="descricao">
-                        <label for="marca">Marca</label>
-                        <input type="text" class="form-control" name="marca" >
-                        <label for="marca">Quantidade</label>
-                        <input type="number" class="form-control" name="qtd">
 
                       </div>
 

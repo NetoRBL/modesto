@@ -79,7 +79,10 @@
 
 		// Carrega seu HTML
 		$dompdf->load_html('
-				<table border="0.5px" style="border-color: black;">
+				<p>Relatorio referente a data '.$mes.'/'.$ano.'</p>
+				<p>Ganho do mes: R$200</p>
+				<p>Impressões: R$</p>
+				<table border="0.5px" style="border-color: black;" >
 					<tbody>
 						<tr>
 							<th colspan="6">Tabela de vendar referente ao mês de ' . $nome_mes . ' do ano ' . $ano . '</th>

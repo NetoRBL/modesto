@@ -8,8 +8,10 @@ include_once("../../model/AdminModel.php");
 include_once("../../model/ProdutoModel.php");
 include_once("../../controller/ProdutoDAO.php");
 include_once("../../model/VendaModel.php");
+include_once("../../controller/servicoDAO.php");
+$servicoDAO = new servicoDAO();
+$servicos = $servicoDAO->listar_servicos();
 $venda = new Venda();
-
 $produtoModel = new Produto();
 $produtoDAO = new produtoDAO();
 $lista_produtos = $produtoDAO->listar_produtos();
@@ -23,9 +25,8 @@ $qtdProd = isset($_POST["qtdProd"])?$_POST["qtdProd"]:"";
 $idProd = isset($_POST["idProd"])?$_POST["idProd"]:"";
 $data = date("d/m/Y");
 $hora = date("H:i");
-$max = isset($_POST["cId"])?$_POST["cId"]:"";
 $num = isset($_POST["num"])?$_POST["num"]:"";
-
+$serv = isset($_POST["serv"])?$_POST["serv"]:"";
 if(isset($_POST['deslogar'])){
   if($_POST['deslogar']=="Sim"){
     unset($_SESSION['login']);
@@ -34,14 +35,14 @@ if(isset($_POST['deslogar'])){
 }
 
 if (isset($_POST["acao"]) and $_POST["acao"]=="Registrar") {
-  $venda->setProduto($produto);    
+  $info = $vendaDAO->pegar_servico($serv);
+  $venda->setProduto($info["nome"]);
+  $venda->setValor($info["preco"] * $num);
+  $venda->setQtd($num);
   $venda->setData($data);
   $venda->setHora($hora);
-  $venda->setValor($num * 0.25);
-  $venda->setQtd($num);
   $venda->setTipo(1);
   $vendaDAO->cadastrar_venda($venda);
-
 }
 
 if (isset($_POST["acao"]) and $_POST["acao"]=="Vender") {
@@ -69,6 +70,7 @@ if(!empty($_SESSION['login'])){
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>AdminLTE 2 | Data Tables</title>
+     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
@@ -107,6 +109,7 @@ if(!empty($_SESSION['login'])){
     $("input#preco").val(preco);
     $("input#qtdMax").attr("max", qtd);
     $("input#qtdProd").val(qtd);
+    $("input#qtdEsto").val(qtd);
     $("input#idProd").val(id);
   }
 </script>
@@ -195,11 +198,11 @@ if(!empty($_SESSION['login'])){
               <i class="glyphicon glyphicon-pencil"></i> <span>Produtos</span>
             </a>
           </li>
-           <li>
-          <a href="relatorio.php">
-            <i class="glyphicon glyphicon-print"></i> <span>Serviços</span>
-          </a>
-        </li>
+          <li>
+            <a href="relatorio.php">
+              <i class="glyphicon glyphicon-print"></i> <span>Serviços</span>
+            </a>
+          </li>
         </ul>
       </section>
 
@@ -226,7 +229,7 @@ if(!empty($_SESSION['login'])){
               <div class="box-header">
                 <h3 class="box-title">Produtos</h3>
                 <div align="right">
-                  <button id="btnImpress" class="btn btn-primary" data-toggle="modal" data-target="#modalExemplo">Impressão/Plastificação</button>
+                  <button id="btnImpress" class="btn btn-primary" data-toggle="modal" data-target="#modalExemplo">Serviços</button>
                 </div>
               </div>
               <!-- /.box-header -->
@@ -386,15 +389,18 @@ if(!empty($_SESSION['login'])){
       <div class="modal-body">
         <form method="post">
           <div align="center">
-            <select class="form-control form-control-lg" name="produto">
-
-              <option value="Xerox">Xerox</option>
-              <option value="Impressão">Impressão</option>
-              <option value="Plastificação">Plastificação</option>
+            <select class="form-control form-control-lg" name="serv">
+              <option hidden value="" disabled selected >Selecione um serviço</option>
+              <?php
+              foreach ($servicos as $servico) {
+                ?> 
+                <option value="<?=$servico["id"]?>"><?=$servico["nome"]?></option>
+              
+              <?php
+            }
+            ?>
             </select>
-
-            <p align="center" style="margin-top: 4px;"><input class="form-control form-control-lg" type="number" name="num"></p>
-            <input type="text" name="valor" >
+            <p align="center" style="margin-top: 4px;"><input min="1" class="form-control form-control-lg" type="number" name="num"></p>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
@@ -406,72 +412,74 @@ if(!empty($_SESSION['login'])){
   </div>
 </div>
 
-  <!-- modal carrinho -->
-  <div class="modal fade" id="modalVender" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 class="modal-title " align="center">Vender produto</h3>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-            <span aria-hidden="true">&times;</span>
+<!-- modal carrinho -->
+<div class="modal fade" id="modalVender" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title " align="center">Vender produto</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+          <span aria-hidden="true">&times;</span>
 
-          </button>
-        </div>
-        <div class="modal-body">
-          <form method="post" enctype="multipart/form-data">
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post" enctype="multipart/form-data">
 
 
+          <div class="form-group">
+            <div class="text-center">
+              <img id="imgProd" class="img rounded-circle" src="../../imagens/icone-produtos.png" style="width:15%; cursor:pointer" title="Clique para adicionar uma foto"/>
+            </div>
             <div class="form-group">
-              <div class="text-center">
-                <img id="imgProd" class="img rounded-circle" src="../../imagens/icone-produtos.png" style="width:15%; cursor:pointer" title="Clique para adicionar uma foto"/>
-              </div>
-              <div class="form-group">
-                <input id="fotoProd" name="teste2" class="form-control" type="file" accept="image/*" style="display:none;">
-                <br>
-                <label for="produto">Nome</label>
-                <input readonly style="cursor: pointer;" type="text" class="form-control" name="produto" id="produto">
-                <label for="preco">Preço</label>
-                <input readonly style="cursor: pointer;" type="text" class="form-control" name="preco" id="preco">
-                <label for="marca">Quantidade</label>
-                <input type="number" class="form-control" name="qtd" id="qtdMax" >
-                <input type="hidden" name="qtdProd" id="qtdProd">
-                <input type="hidden" name="idProd" id="idProd">
-
-              </div>
-
-
+              <input id="fotoProd" name="teste2" class="form-control" type="file" accept="image/*" style="display:none;">
+              <br>
+              <label for="produto">Nome</label>
+              <input readonly style="cursor: pointer;" type="text" class="form-control" name="produto" id="produto">
+              <label for="preco">Preço</label>
+              <input readonly style="cursor: pointer;" type="text" class="form-control" name="preco" id="preco">
+              <label for="max">Quantidade em estoque</label>
+              <input readonly style="cursor: pointer;" type="text" class="form-control" id="qtdEsto">
+              <label for="qtdMax">Quantidade a ser vendida</label>
+              <input type="number" class="form-control" name="qtd" id="qtdMax" >
+              <input type="hidden" name="qtdProd" id="qtdProd">
+              <input type="hidden" name="idProd" id="idProd">
 
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-              <input type="submit" class="btn btn-success" name="acao" value="Vender">
-            </form>
+
+
+
           </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            <input type="submit" class="btn btn-success" name="acao" value="Vender">
+          </form>
         </div>
       </div>
     </div>
+  </div>
 
-    <script type="text/javascript">
-     $(document).ready(function () {
-       $('#imgProd').click(function () {
-        $('#fotoProd').click();
-      });
-       $("#fotoProd").on('change', function () {
-        if (typeof (FileReader) != "undefined") {
-          var reader = new FileReader();
-          reader.onload = function (e) {
-            $('#imgProd').attr('src', e.target.result);
-          }
-          var file = $(this)[0].files[0];
-          if (typeof (file) != "undefined")
-            reader.readAsDataURL($(this)[0].files[0]);
-        } else {
-          alert("Este navegador nao suporta FileReader.");
+  <script type="text/javascript">
+   $(document).ready(function () {
+     $('#imgProd').click(function () {
+      $('#fotoProd').click();
+    });
+     $("#fotoProd").on('change', function () {
+      if (typeof (FileReader) != "undefined") {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          $('#imgProd').attr('src', e.target.result);
         }
-      });
-     });
-   </script>
+        var file = $(this)[0].files[0];
+        if (typeof (file) != "undefined")
+          reader.readAsDataURL($(this)[0].files[0]);
+      } else {
+        alert("Este navegador nao suporta FileReader.");
+      }
+    });
+   });
+ </script>
 
- </body>
- </html>
- <?php } else{ header("location:../index.php"); } ?>
+</body>
+</html>
+<?php } else{ header("location:../index.php"); } ?>

@@ -84,15 +84,14 @@
 			$apagar->execute();
 			header("location:produtos.php");
 		}
-		function maxValue($id){
+		function listar_servicos(){
 			try{
 				require_once("../../config/conexao.php");
-				$sql ="SELECT qtd FROM produto WHERE id=:id";
+				$sql ="SELECT * FROM produto WHERE tipo = 1";
 				$pdo = new PDO('mysql:host=localhost;dbname=modesto;charset=utf8', 'root', '');
-				$max = $pdo->prepare($sql);
-				$max->bindValue(':id',$id);
-				$max->execute();
-				$resultado = $max->fetchAll(PDO::FETCH_ASSOC);
+				$listar = $pdo->prepare($sql);
+				$listar->execute();
+				$resultado = $listar->fetchAll(PDO::FETCH_ASSOC);
 				return $resultado;
 			} catch(PDOException $e){
 				echo 'Erro:' . $e->getMessage();
