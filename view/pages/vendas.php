@@ -5,11 +5,11 @@
   include_once("../../model/AdminModel.php");
   include_once("../../model/VendaModel.php");
   include_once("../../controller/VendaDAO.php");
-  
 
-  $vendaDAO = new vendaDAO();
-  $venda_produtos = $vendaDAO->listar_vendas_produtos();
-  $venda_impressoes = $vendaDAO->listar_vendas_impressoes();
+  $venda = new vendaDAO();
+  $venda_produtos = $venda->listar_vendas_produtos();
+  $venda_impressoes = $venda->listar_vendas_impressoes();
+  
   if(isset($_POST['deslogar'])){
     if($_POST['deslogar']=="Sim"){
       unset($_SESSION['login']);
@@ -113,7 +113,7 @@
   </header>
   
   <aside class="main-sidebar">
-    <section class="sidebar">
+    <    <section class="sidebar">
      
       <div class="user-panel">
         <div class="pull-left image">
@@ -232,7 +232,7 @@
               <table id="tabelaImpressoes" class="table table-bordered table-striped">
                 <thead>
                   <tr>
-                    <th>Nome</th>
+                    <th>Produto</th>
                     <th>Valor</th>
                     <th>Quantidade</th>
                     <th>Data</th>
