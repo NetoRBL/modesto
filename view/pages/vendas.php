@@ -227,7 +227,7 @@
         <!-- right col -->
         <section class="col-lg-6 connectedSortable">
           <!-- /.box-header -->
-          <h3>Tabela de impressões/plastificações</h3>
+          <h3>Tabela de serviços</h3>
             <div class="box-body">
               <table id="tabelaImpressoes" class="table table-bordered table-striped">
                 <thead>

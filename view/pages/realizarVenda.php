@@ -441,7 +441,7 @@ if(!empty($_SESSION['login'])){
               <label for="max">Quantidade em estoque</label>
               <input readonly style="cursor: pointer;" type="text" class="form-control" id="qtdEsto">
               <label for="qtdMax">Quantidade a ser vendida</label>
-              <input type="number" class="form-control" name="qtd" id="qtdMax" >
+              <input type="number" class="form-control" name="qtd" id="qtdMax" min="1">
               <input type="hidden" name="qtdProd" id="qtdProd">
               <input type="hidden" name="idProd" id="idProd">
 

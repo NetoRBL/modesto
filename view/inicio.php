@@ -23,6 +23,11 @@ if(!empty($_SESSION['login'])){
   <!DOCTYPE html>
   <html>
   <head>
+    <style type="text/css">
+      #mdcaixa{
+        width: 330px;
+      }
+    </style>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>AdminLTE 2 | Dashboard</title>
@@ -206,7 +211,7 @@ if(!empty($_SESSION['login'])){
             </div>
           </div>
           <!-- ./col -->
-          <div class="col-lg-3 col-xs-6" style="cursor: pointer; ">
+          <div class="col-lg-3 col-xs-6" style="cursor: pointer;" data-toggle="modal" data-target="#modalCaixa">
             <!-- small box -->
             <div class="small-box bg-green">
               <div class="inner">
@@ -221,7 +226,7 @@ if(!empty($_SESSION['login'])){
             </div>
           </div>
           <!-- ./col -->
-          <div class="col-lg-3 col-xs-6" data-toggle="modal" data-target="#modalCadastrar">
+          <div class="col-lg-3 col-xs-6">
             <!-- small box -->
             <div class="small-box bg-yellow">
               <div class="inner">
@@ -384,11 +389,11 @@ if(!empty($_SESSION['login'])){
   });
 </script>
 
-<div class="modal fade" id="modalExemplo" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-sm" role="document">
+<div class="modal fade" id="modalCaixa" tabindex="-1" role="dialog">
+  <div id="mdcaixa" class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title " align="center">Quantidade de produtos</h5>
+        <h5 class="modal-title " align="center">Caixa</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
           <span aria-hidden="true">&times;</span>
 
@@ -396,15 +401,12 @@ if(!empty($_SESSION['login'])){
       </div>
       <div class="modal-body">
         <form method="post">
-          <div align="center">
-            <input type="valors" name="">
-            <input type="number" name="valor_atual">
-            <input type="button" name="saque" value="Retirada">
-            <input type="button" name="saque" value="">
-          </div>
+          
+
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-            <input type="submit" class="btn btn-success" name="acao" value="Registrar">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar caixa</button>
+            <input type="submit" class="btn btn-success" name="acao" value="Abrir caixa">
           </div>
         </form>
       </div>
