@@ -36,6 +36,13 @@ if (isset($_POST["acao"]) and $_POST["acao"]=="Delete" and isset($_POST["dId"]))
 }
 
 if (isset($_POST["acao"]) and $_POST["acao"]=="Cadastrar") {
+  if (strstr($preco, ",")) {
+   $preco = str_replace(",",".",$preco);
+   $produto->setPreco($preco);
+  }
+  else{
+    $produto->setPreco($preco);
+  }
   $produto->setNome($nome);    
   $produto->setDescricao($descricao);
   $produto->setMarca($marca);
@@ -46,6 +53,7 @@ if (isset($_POST["acao"]) and $_POST["acao"]=="Cadastrar") {
   $tipo = $nome_tipo[1];
   $novo_nome = sha1(microtime()) . "." . $tipo;
   move_uploaded_file($_FILES['imagem']['tmp_name'], "../dist/img/img_produtos/".$novo_nome);
+  
   if (empty($_FILES["imagem"]["name"])) {
     $novo_nome = "";
   }
@@ -507,13 +515,13 @@ if(!empty($_SESSION['login'])){
                         <label for="nome">Nome</label>
                         <input type="text" class="form-control" name="nome">
                         <label for="preco">Preço</label>
-                        <input type="text" class="form-control" name="preco" >
+                        <input type="text" class="form-control" name="preco" min="0">
                         <label for="descricao">Descrição</label>
                         <input type="text" class="form-control" name="descricao">
                         <label for="marca">Marca</label>
                         <input type="text" class="form-control" name="marca" >
                         <label for="marca">Quantidade</label>
-                        <input type="number" class="form-control" name="qtd">
+                        <input type="number" class="form-control" name="qtd" min="1">
 
                       </div>
 
