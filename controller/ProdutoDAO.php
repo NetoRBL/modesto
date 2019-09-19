@@ -51,6 +51,21 @@
 			}
 		}
 
+		function listar_imagem($produto){
+			try{
+				require_once("../../config/conexao.php");
+				$sql ="SELECT imagem FROM produto WHERE id = :id";
+				$pdo = new PDO('mysql:host=localhost;dbname=modesto;charset=utf8', 'root', '');
+				$listar = $pdo->prepare($sql);
+				$listar->bindValue(":id", $produto->getId());
+				$listar->execute();
+				$resultado = $listar->fetch(PDO::FETCH_ASSOC);
+				return $resultado;
+			} catch(PDOException $e){
+				echo 'Erro:' . $e->getMessage();
+			}
+		}
+
 		function editar_produto($produtos){
 			echo $produtos->getNome();
 				echo "Olaaaa";

@@ -64,6 +64,7 @@ if (isset($_POST["acao"]) and $_POST["acao"]=="Cadastrar") {
 }
 
 if (isset($_POST["acao"]) and $_POST["acao"]=="Editar" and isset($_POST["eId"])) {
+
   if (strstr($nPreco, ",")) {
    $nPreco = str_replace(",",".",$nPreco);
    $produto->setPreco($nPreco);
@@ -76,18 +77,32 @@ if (isset($_POST["acao"]) and $_POST["acao"]=="Editar" and isset($_POST["eId"]))
   $produto->setMarca($nMarca);
   $produto->setPreco($nPreco);
   $produto->setQtd($nQtd);
-  
-  $nome_tipo = explode(".", $_FILES['eImagem']['name']);
-  $tipo = $nome_tipo[1];
-  $novo_nome = sha1(microtime()) . "." . $tipo;
-  move_uploaded_file($_FILES['eImagem']['tmp_name'], "../dist/img/img_produtos/".$novo_nome);
-  if (empty($_FILES["eImagem"]["name"])) {
-    $novo_nome = "";
-  }
-  $produto->setImagem($novo_nome);
 
-  $produto->setId($_POST["eId"]);
-  $produtoDAO->editar_produto($produto);
+  
+  if (!empty($eImagem)) {
+    $produto->setNome($nNome);    
+    $produto->setDescricao($nDescricao);
+    $produto->setMarca($nMarca);
+    $produto->setPreco($nPreco);
+    $produto->setQtd($nQtd);
+    $nome_tipo = explode(".", $_FILES['eImagem']['name']);
+    $tipo = $nome_tipo[1];
+    $novo_nome = sha1(microtime()) . "." . $tipo;
+    move_uploaded_file($_FILES['eImagem']['tmp_name'], "../dist/img/img_produtos/".$novo_nome);
+    $produto->setImagem($novo_nome);
+    $produto->setId($_POST["eId"]);
+    $produtoDAO->editar_produto($produto);
+  }else{
+    $produto->setNome($nNome);    
+    $produto->setDescricao($nDescricao);
+    $produto->setMarca($nMarca);
+    $produto->setPreco($nPreco);
+    $produto->setQtd($nQtd);
+    $produto->setId($_POST["eId"]);
+    $imagem_p = $produtoDAO->listar_imagem($produto);
+    $produto->setImagem($imagem_p["imagem"]);
+    $produtoDAO->editar_produto($produto);
+  }
 
 }
 if(!empty($_SESSION['login'])){
