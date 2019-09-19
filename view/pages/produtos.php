@@ -39,27 +39,27 @@ if (isset($_POST["acao"]) and $_POST["acao"]=="Cadastrar") {
   if (strstr($preco, ",")) {
    $preco = str_replace(",",".",$preco);
    $produto->setPreco($preco);
-  }
-  else{
-    $produto->setPreco($preco);
-  }
-  $produto->setNome($nome);    
-  $produto->setDescricao($descricao);
-  $produto->setMarca($marca);
+ }
+ else{
   $produto->setPreco($preco);
-  $produto->setQtd($qtd);
-  
-  $nome_tipo = explode(".", $_FILES['imagem']['name']);
-  $tipo = $nome_tipo[1];
-  $novo_nome = sha1(microtime()) . "." . $tipo;
-  move_uploaded_file($_FILES['imagem']['tmp_name'], "../dist/img/img_produtos/".$novo_nome);
+}
+$produto->setNome($nome);    
+$produto->setDescricao($descricao);
+$produto->setMarca($marca);
+$produto->setPreco($preco);
+$produto->setQtd($qtd);
 
-  if (empty($_FILES["imagem"]["name"])) {
-    $novo_nome = "";
-  }
-  $produto->setImagem($novo_nome);
-  
-  $produtoDAO->cadastrar_produto($produto);
+$nome_tipo = explode(".", $_FILES['imagem']['name']);
+$tipo = $nome_tipo[1];
+$novo_nome = sha1(microtime()) . "." . $tipo;
+move_uploaded_file($_FILES['imagem']['tmp_name'], "../dist/img/img_produtos/".$novo_nome);
+
+if (empty($_FILES["imagem"]["name"])) {
+  $novo_nome = "";
+}
+$produto->setImagem($novo_nome);
+
+$produtoDAO->cadastrar_produto($produto);
 
 }
 
@@ -68,41 +68,41 @@ if (isset($_POST["acao"]) and $_POST["acao"]=="Editar" and isset($_POST["eId"]))
   if (strstr($nPreco, ",")) {
    $nPreco = str_replace(",",".",$nPreco);
    $produto->setPreco($nPreco);
-  }
-  else{
-    $produto->setPreco($nPreco);
-  }
+ }
+ else{
+  $produto->setPreco($nPreco);
+}
+$produto->setNome($nNome);    
+$produto->setDescricao($nDescricao);
+$produto->setMarca($nMarca);
+$produto->setPreco($nPreco);
+$produto->setQtd($nQtd);
+
+
+if (!empty($eImagem)) {
   $produto->setNome($nNome);    
   $produto->setDescricao($nDescricao);
   $produto->setMarca($nMarca);
   $produto->setPreco($nPreco);
   $produto->setQtd($nQtd);
-
-  
-  if (!empty($eImagem)) {
-    $produto->setNome($nNome);    
-    $produto->setDescricao($nDescricao);
-    $produto->setMarca($nMarca);
-    $produto->setPreco($nPreco);
-    $produto->setQtd($nQtd);
-    $nome_tipo = explode(".", $_FILES['eImagem']['name']);
-    $tipo = $nome_tipo[1];
-    $novo_nome = sha1(microtime()) . "." . $tipo;
-    move_uploaded_file($_FILES['eImagem']['tmp_name'], "../dist/img/img_produtos/".$novo_nome);
-    $produto->setImagem($novo_nome);
-    $produto->setId($_POST["eId"]);
-    $produtoDAO->editar_produto($produto);
-  }else{
-    $produto->setNome($nNome);    
-    $produto->setDescricao($nDescricao);
-    $produto->setMarca($nMarca);
-    $produto->setPreco($nPreco);
-    $produto->setQtd($nQtd);
-    $produto->setId($_POST["eId"]);
-    $imagem_p = $produtoDAO->listar_imagem($produto);
-    $produto->setImagem($imagem_p["imagem"]);
-    $produtoDAO->editar_produto($produto);
-  }
+  $nome_tipo = explode(".", $_FILES['eImagem']['name']);
+  $tipo = $nome_tipo[1];
+  $novo_nome = sha1(microtime()) . "." . $tipo;
+  move_uploaded_file($_FILES['eImagem']['tmp_name'], "../dist/img/img_produtos/".$novo_nome);
+  $produto->setImagem($novo_nome);
+  $produto->setId($_POST["eId"]);
+  $produtoDAO->editar_produto($produto);
+}else{
+  $produto->setNome($nNome);    
+  $produto->setDescricao($nDescricao);
+  $produto->setMarca($nMarca);
+  $produto->setPreco($nPreco);
+  $produto->setQtd($nQtd);
+  $produto->setId($_POST["eId"]);
+  $imagem_p = $produtoDAO->listar_imagem($produto);
+  $produto->setImagem($imagem_p["imagem"]);
+  $produtoDAO->editar_produto($produto);
+}
 
 }
 if(!empty($_SESSION['login'])){
@@ -258,30 +258,23 @@ if(!empty($_SESSION['login'])){
             <i class="glyphicon glyphicon-pencil"></i> <span>Produtos</span>
           </a>
         </li>
-         <li>
+        <li>
           <a href="relatorio.php">
             <i class="glyphicon glyphicon-print"></i> <span>Serviços</span>
           </a>
         </li>
       </ul>
-
-
       <!-- /.sidebar -->
-
     </aside>
-
   </section>
 
- 
-<!-- /.sidebar -->
 
-</aside>
+  <!-- /.sidebar -->
 
-</section>
 
-<div>
+  <div>
 
-  <div class="content-wrapper">
+    <div class="content-wrapper">
 
       <div>
         <section class="content-header">
@@ -452,8 +445,8 @@ if(!empty($_SESSION['login'])){
                 </div>
                 <p></p>
                 <div class="text-center">
-                        <img id="nImagem" name="teste3" class="img rounded-circle" src="../../imagens/icone-produtos.png" style="width:15%; cursor:pointer" title="Clique para adicionar uma foto"/>
-                      </div>
+                  <img id="nImagem" name="teste3" class="img rounded-circle" src="../../imagens/icone-produtos.png" style="width:15%; cursor:pointer" title="Clique para adicionar uma foto"/>
+                </div>
                 <div class="modal-body">
                   <form method="post" enctype="multipart/form-data">
 
@@ -526,76 +519,76 @@ if(!empty($_SESSION['login'])){
                     <form method="post" enctype="multipart/form-data">
 
 
-                    <div class="form-group">
-                      <div class="text-center">
-                        <img id="teste" name="teste2" class="img rounded-circle" src="../../imagens/icone-produtos.png" style="width:15%; cursor:pointer" title="Clique para adicionar uma foto"/>
-                      </div>
                       <div class="form-group">
-                        <input id="teste2" name="imagem" class="form-control" type="file" accept="image/*" style="display:none;">
-                        <br>
-                        <input type="hidden" name="nImagem" id="nImagem">
-                        <label for="nome">Nome</label>
-                        <input type="text" class="form-control" name="nome">
-                        <label for="preco">Preço</label>
-                        <input type="text" class="form-control" name="preco" min="0">
-                        <label for="descricao">Descrição</label>
-                        <input type="text" class="form-control" name="descricao">
-                        <label for="marca">Marca</label>
-                        <input type="text" class="form-control" name="marca" >
-                        <label for="marca">Quantidade</label>
-                        <input type="number" class="form-control" name="qtd" min="1">
+                        <div class="text-center">
+                          <img id="teste" name="teste2" class="img rounded-circle" src="../../imagens/icone-produtos.png" style="width:15%; cursor:pointer" title="Clique para adicionar uma foto"/>
+                        </div>
+                        <div class="form-group">
+                          <input id="teste2" name="imagem" class="form-control" type="file" accept="image/*" style="display:none;">
+                          <br>
+                          <input type="hidden" name="nImagem" id="nImagem">
+                          <label for="nome">Nome</label>
+                          <input type="text" class="form-control" name="nome">
+                          <label for="preco">Preço</label>
+                          <input type="text" class="form-control" name="preco" min="0">
+                          <label for="descricao">Descrição</label>
+                          <input type="text" class="form-control" name="descricao">
+                          <label for="marca">Marca</label>
+                          <input type="text" class="form-control" name="marca" >
+                          <label for="marca">Quantidade</label>
+                          <input type="number" class="form-control" name="qtd" min="1">
+
+                        </div>
+
+
 
                       </div>
-
-
-
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <input type="submit" class="btn btn-success" name="acao" value="Cadastrar">
+                      </form>
                     </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                      <input type="submit" class="btn btn-success" name="acao" value="Cadastrar">
-                    </form>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <script type="text/javascript">
-             $(document).ready(function () {
-               $('#teste').click(function () {
-                $('#teste2').click();
-              });
-               $("#teste2").on('change', function () {
-                if (typeof (FileReader) != "undefined") {
-                  var reader = new FileReader();
-                  reader.onload = function (e) {
-                    $('#teste').attr('src', e.target.result);
+              <script type="text/javascript">
+               $(document).ready(function () {
+                 $('#teste').click(function () {
+                  $('#teste2').click();
+                });
+                 $("#teste2").on('change', function () {
+                  if (typeof (FileReader) != "undefined") {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                      $('#teste').attr('src', e.target.result);
+                    }
+                    var file = $(this)[0].files[0];
+                    if (typeof (file) != "undefined")
+                      reader.readAsDataURL($(this)[0].files[0]);
+                  } else {
+                    alert("Este navegador nao suporta FileReader.");
                   }
-                  var file = $(this)[0].files[0];
-                  if (typeof (file) != "undefined")
-                    reader.readAsDataURL($(this)[0].files[0]);
-                } else {
-                  alert("Este navegador nao suporta FileReader.");
-                }
-              });
+                });
 
-               $('#nImagem').click(function () {
-                $('#teste4').click();
-              });
-               $("#teste4").on('change', function () {
-                if (typeof (FileReader) != "undefined") {
-                  var reader = new FileReader();
-                  reader.onload = function (e) {
-                    $('#nImagem').attr('src', e.target.result);
+                 $('#nImagem').click(function () {
+                  $('#teste4').click();
+                });
+                 $("#teste4").on('change', function () {
+                  if (typeof (FileReader) != "undefined") {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                      $('#nImagem').attr('src', e.target.result);
+                    }
+                    var file = $(this)[0].files[0];
+                    if (typeof (file) != "undefined")
+                      reader.readAsDataURL($(this)[0].files[0]);
+                  } else {
+                    alert("Este navegador nao suporta FileReader.");
                   }
-                  var file = $(this)[0].files[0];
-                  if (typeof (file) != "undefined")
-                    reader.readAsDataURL($(this)[0].files[0]);
-                } else {
-                  alert("Este navegador nao suporta FileReader.");
-                }
-              });
-             });
-           </script>
-         </body>
-         </html>
-         <?php } else{ header("location:../index.php"); } ?>
+                });
+               });
+             </script>
+           </body>
+           </html>
+           <?php } else{ header("location:../index.php"); } ?>
