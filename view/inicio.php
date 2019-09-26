@@ -45,8 +45,6 @@ if ($statusCaixa == "fechado") {
   }
 }
 
-$fechado = isset($_POST['fechado'])?$_POST['fechado']:"";
-
 if (isset($_POST["acao"]) and $_POST["acao"]=="Retirar" and isset($_POST["vlsaque"])) {
   $data = date("d/m/Y");
   $hora = date("H:i");
@@ -532,7 +530,11 @@ if(!empty($_SESSION['login'])){
       <div class="modal-body">
         <form method="post">
           <p>Escolha uma operação</p>
-          <button id="abrCaixa" class="btn btn-secondary" data-dismiss="modal" data-toggle="modal" data-target="#modalAbrirCaixa" onclick="verificar('<?=$caixaInicial['valor']?>')">Abrir caixa</button>
+          <button id="abrCaixa" class="btn btn-secondary" data-dismiss="modal" data-toggle="modal" data-target="#modalAbrirCaixa" onclick="verificar('<?=$caixaInicial['valor']?>')" <?php
+            if ($ultimo_status_caixa["data"] and $ultimo_status_caixa["status"] == "Fechado") {
+              echo "title='O caixa já foi fechado, amanhã poderá abrir novamente.' disabled";
+            }
+          ?>>Abrir caixa</button>
           <button class="btn btn-danger" style="margin-left: 10px; margin-right: 10px;">Fechar caixa</button>
           <input type="hidden" name="statusCaixa" value="fechado">
           <button class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#modalRetirada" onclick="valorMax('<?=$caixa['caixa']?>')">Retirada</button>

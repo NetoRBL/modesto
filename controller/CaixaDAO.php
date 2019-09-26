@@ -22,7 +22,7 @@
 		function listar_ultimo_status(){
 			try{
 				require_once("../config/conexao.php");
-				$sql ="SELECT status FROM caixa ORDER BY id DESC LIMIT 1";
+				$sql ="SELECT status, data FROM caixa ORDER BY id DESC LIMIT 1";
 				$pdo = new PDO('mysql:host=localhost;dbname=modesto;charset=utf8', 'root', '');
 				$listar = $pdo->prepare($sql);
 				$listar->execute();
