@@ -12,6 +12,9 @@ $caixaDAO = new caixaDAO();
 $caixaModel = new CaixaModel();
 $vendaDAO = new vendaDAO();
 $vendaModel = new Venda();
+
+$ultimo_status_caixa = $caixaDAO->listar_ultimo_status();
+
 $venda_ano = $vendaDAO->listar_ganho_ano();
 $contador = 0;
 foreach ($venda_ano as $venda_mes) {
@@ -28,7 +31,21 @@ $ganho = $vendaDAO->listar_ganho();
 $ganho_passado = $vendaDAO->listar_ganho_passado();
 $ganho_impressoes = $vendaDAO->listar_ganho_impressoes();
 
+$statusCaixa = isset($_POST['statusCaixa'])?$_POST['statusCaixa']:"";
 
+if ($statusCaixa == "fechado") {
+  if ($ultimo_status_caixa["status"] != "Fechado") {
+    $caixaModel->setStatus("Fechado");
+    $caixaModel->setValor(0);
+    $caixaModel->setData(date('d/m/Y'));
+    $caixaModel->setHora(date('H:i'));
+    $caixaDAO->resgistrar_caixa($caixaModel);
+  }else{
+    
+  }
+}
+
+$fechado = isset($_POST['fechado'])?$_POST['fechado']:"";
 
 if (isset($_POST["acao"]) and $_POST["acao"]=="Retirar" and isset($_POST["vlsaque"])) {
   $data = date("d/m/Y");
@@ -37,6 +54,14 @@ if (isset($_POST["acao"]) and $_POST["acao"]=="Retirar" and isset($_POST["vlsaqu
   $caixaModel->setValor($_POST["vlsaque"]);
   $caixaModel->setData($data);
   $caixaModel->setHora($hora);
+  $caixaDAO->resgistrar_caixa($caixaModel);
+}
+
+if (isset($_POST["acao"]) and $_POST["acao"] = "Abrir Caixa") {
+  $caixaModel->setStatus("Aberto");
+  $caixaModel->setValor(0);
+  $caixaModel->setData(date('d/m/Y'));
+  $caixaModel->setHora(date('H:i'));
   $caixaDAO->resgistrar_caixa($caixaModel);
 }
 
@@ -198,23 +223,47 @@ if(!empty($_SESSION['login'])){
               <span>Inicio</span>
             </a>
           </li>
-          <li>
+          <li <?php 
+            if ($ultimo_status_caixa["status"] == "Fechado") {
+              echo "style='pointer-events:none;opacity:0.6;'";
+            }else{
+              echo "style='pointer-events:auto;opacity:1;'";
+            }
+          ?>>
             <a href="pages/realizarVenda.php">
               <i class="fa fa-money"></i>
               <span>Realizar Venda</span>
             </a>
           </li>
-          <li>
+          <li <?php 
+            if ($ultimo_status_caixa["status"] == "Fechado") {
+              echo "style='pointer-events:none;opacity:0.6;'";
+            }else{
+              echo "style='pointer-events:auto;opacity:1;'";
+            }
+          ?>>
             <a href="pages/vendas.php">
               <i class="glyphicon glyphicon-shopping-cart"></i> <span>Vendas</span>
             </a>
           </li>
-          <li>
+          <li <?php 
+            if ($ultimo_status_caixa["status"] == "Fechado") {
+              echo "style='pointer-events:none;opacity:0.6;'";
+            }else{
+              echo "style='pointer-events:auto;opacity:1;'";
+            }
+          ?>>
             <a href="pages/produtos.php">
               <i class="glyphicon glyphicon-pencil"></i> <span>Produtos</span>
             </a>
           </li>
-          <li>
+          <li <?php 
+            if ($ultimo_status_caixa["status"] == "Fechado") {
+              echo "style='pointer-events:none;opacity:0.6;'";
+            }else{
+              echo "style='pointer-events:auto;opacity:1;'";
+            }
+          ?>>
             <a href="pages/relatorio.php">
               <i class="glyphicon glyphicon-print"></i> <span>Serviços</span>
             </a>
@@ -485,6 +534,7 @@ if(!empty($_SESSION['login'])){
           <p>Escolha uma operação</p>
           <button id="abrCaixa" class="btn btn-secondary" data-dismiss="modal" data-toggle="modal" data-target="#modalAbrirCaixa" onclick="verificar('<?=$caixaInicial['valor']?>')">Abrir caixa</button>
           <button class="btn btn-danger" style="margin-left: 10px; margin-right: 10px;">Fechar caixa</button>
+          <input type="hidden" name="statusCaixa" value="fechado">
           <button class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#modalRetirada" onclick="valorMax('<?=$caixa['caixa']?>')">Retirada</button>
         </div>
       </form>
