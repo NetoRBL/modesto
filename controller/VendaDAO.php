@@ -119,6 +119,32 @@ class vendaDAO{
 		}
 	}
 
+	function listar_ganho_ano(){
+		try{
+			$ganho_ano = array();
+			for($i = 1; $i <= 12; $i++){
+				if($i < 10){
+					$mes = '0' . $i;
+				}else{
+					$mes = $i;
+				}
+				$data = '%/' . $mes . '/' . date('Y');
+
+				require_once("../config/conexao.php");
+				$sql ="SELECT SUM(valor) as total_valor FROM venda WHERE data LIKE :data";
+				$pdo = new PDO('mysql:host=localhost;dbname=modesto;charset=utf8', 'root', '');
+				$listar = $pdo->prepare($sql);
+				$listar->bindValue(':data', $data);
+				$listar->execute();
+				$resultado = $listar->fetch(PDO::FETCH_ASSOC);
+				$ganho_ano[$i] = $resultado;
+			}
+			return $ganho_ano;
+		} catch(PDOException $e){
+			echo 'Erro:' . $e->getMessage();
+		}
+	}
+
 	function listar_ganho_passado(){
 		try{
 

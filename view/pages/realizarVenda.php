@@ -210,7 +210,105 @@ if(!empty($_SESSION['login'])){
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-      
+    <section class="content-header">
+        <h1>
+          Realizar uma venda
+          <small>marque os produtos</small>
+        </h1>
+        <ol class="breadcrumb">
+          <li><a href="#"><i class="fa fa-money"></i> Realizar Venda</a></li>
+        </ol>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="box">
+              <div class="box-header">
+                <h3 class="box-title">Produtos</h3>
+                <div align="right">
+                  <button id="btnImpress" class="btn btn-primary" data-toggle="modal" data-target="#modalExemplo">Serviços</button>
+                </div>
+              </div>
+              <!-- /.box-header -->
+              <div class="box-body">
+                <table id="myTable" class="table table-bordered table-striped">
+                  <thead>
+                    <tr>
+                      <th>Adicionar ao carrinho</th>
+                      <th>Imagem</th>
+                      <th>Nome</th>
+                      <th>Descrição</th>
+                      <th>Marca</th>
+                      <th>Preço</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php
+
+                    foreach ($lista_produtos as $produtos) {
+                      if (empty($produtos["imagem"])) {
+                        $urlImg = "../../imagens/icone-produtos.png";
+                      }else{
+                        $urlImg = "../dist/img/img_produtos/" . $produtos["imagem"];
+                      }
+
+                      if ($produtos["qtd"] > 0) {
+
+
+                        ?>
+
+                        <tr>
+
+                         <td align='center'><button  class='btn btn-success' onclick="trocarCampos('<?=$produtos['id']?>','<?=$produtos['imagem']?>','<?=$produtos['nome']?>','<?=$produtos['preco']?>','<?=$produtos['qtd']?>')" data-toggle="modal" data-target="#modalVender">+</button></td>
+                         <td align='center'><img class="img-fluid" style="width: 20%" src="<?=$urlImg?>"> </td>
+                         <td align='center'><?=$produtos['nome']?></td>
+                         <td align='center'><?=$produtos['descricao']?></td>
+                         <td align='center'> <?=$produtos['marca']?> </td>
+                         <td align='center'>R$  <?=$produtos['preco']?> </td>
+
+                       </tr>
+
+                       <?php   
+                     }
+                     else{
+                      ?>
+                      <tr>
+                        <td align='center'><button disabled class='btn btn-danger' style="cursor: pointer;" title="Produto em falta">+</button></td>
+                        <td align='center'><img class="img-fluid" style="width: 20%" src="<?=$urlImg?>"> </td>
+                        <td align='center'><?=$produtos['nome']?> </td>
+                        <td align='center'><?=$produtos['descricao']?></td>
+                        <td align='center'> <?=$produtos['marca']?> </td>
+                        <td align='center'>R$  <?=$produtos['preco']?> </td>
+                      </tr>
+                      <?php
+                    }
+
+                  }
+
+                  ?>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th>Adicionar ao carrinho</th>
+                    <th>Imagem</th>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th>Marca</th>
+                    <th>Preço</th>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
   </div>
   <!-- /.content-wrapper -->
   <footer class="main-footer">
