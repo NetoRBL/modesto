@@ -1,15 +1,35 @@
 <?php
 session_start();
+date_default_timezone_set('America/Sao_Paulo');
 
 include_once("../controller/AdminDAO.php");
 include_once("../model/AdminModel.php");
 include_once("../controller/VendaDAO.php");
 include_once("../model/VendaModel.php");
+include_once("../controller/CaixaDAO.php");
+include_once("../model/CaixaModel.php");
+$caixaDAO = new caixaDAO();
+$caixaModel = new CaixaModel();
 $vendaDAO = new vendaDAO();
+$data = date("d/m/Y");
+$caixa = $caixaDAO->valor_caixa($data);
+$caixaInicial = $caixaDAO->check($data);
 $ganho = $vendaDAO->listar_ganho();
 $ganho_passado = $vendaDAO->listar_ganho_passado();
 $ganho_impressoes = $vendaDAO->listar_ganho_impressoes();
-$caixa = $vendaDAO->caixa();
+
+
+
+if (isset($_POST["acao"]) and $_POST["acao"]=="Retirar" and isset($_POST["vlsaque"])) {
+  $data = date("d/m/Y");
+  $hora = date("H:i");
+  $caixaModel->setStatus("Retirada");
+  $caixaModel->setValor($_POST["vlsaque"]);
+  $caixaModel->setData($data);
+  $caixaModel->setHora($hora);
+  $caixaDAO->resgistrar_caixa($caixaModel);
+}
+
 if(isset($_POST['deslogar'])){
   if($_POST['deslogar']=="Sim"){
     unset($_SESSION['login']);
@@ -23,6 +43,20 @@ if(!empty($_SESSION['login'])){
   <!DOCTYPE html>
   <html>
   <head>
+    <script type="text/javascript">
+      function valorMax(max){
+        $("input#saque").attr("max", max);        
+      }
+      function verificar(val){
+        if (val == 0 || val == false) {
+          $("#abrCaixa").attr("disabled", false); 
+        }
+        else{
+          $("#abrCaixa").attr("disabled", true);
+          alert("Valor inicial do caixa já confirmado"); 
+        }
+      }
+    </script>
     <style type="text/css">
       #mdcaixa{
         width: 330px;
@@ -216,7 +250,7 @@ if(!empty($_SESSION['login'])){
             <div class="small-box bg-green">
               <div class="inner">
 
-                <h3>R$ <?=number_format($caixa["caixa"], 2, '.', '')?></h3>
+                <h3>R$ <?=number_format($caixa["valor_caixa"], 2, '.', '')?></h3>
                 <p><h4>Caixa</h4></p>
 
               </div>
@@ -401,18 +435,66 @@ if(!empty($_SESSION['login'])){
       </div>
       <div class="modal-body">
         <form method="post">
-          
-
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-            <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar caixa</button>
-            <input type="submit" class="btn btn-success" name="acao" value="Abrir caixa">
-          </div>
-        </form>
-      </div>
+          <p>Escolha uma operação</p>
+          <button id="abrCaixa" class="btn btn-secondary" data-dismiss="modal" data-toggle="modal" data-target="#modalAbrirCaixa" onclick="verificar('<?=$caixaInicial['valor']?>')">Abrir caixa</button>
+          <button class="btn btn-danger" style="margin-left: 10px; margin-right: 10px;">Fechar caixa</button>
+          <button class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#modalRetirada" onclick="valorMax('<?=$caixa['caixa']?>')">Retirada</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
+
+
+
+<div class="modal fade" id="modalRetirada" tabindex="-1" role="dialog">
+  <div id="mdcaixa" class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title " align="center">Retirada</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+          <span aria-hidden="true">&times;</span>
+
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post">
+          <p>Digite um valor a ser retirado</p>
+          <input type="number" class="form-control" id="saque" name="vlsaque">
+          <div align="right">
+            <button class="btn btn-success"data-dismiss="modal" data-toggle="modal" data-target="#modalCaixa">Voltar</button>
+            <input type="submit" name="acao" class="btn btn-primary" value="Retirar">
+          </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="modal fade" id="modalAbrirCaixa" tabindex="-1" role="dialog">
+  <div id="mdcaixa" class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title " align="center">Abrir caixa</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+          <span aria-hidden="true">&times;</span>
+
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post">
+          <p>Digite um valor inicial do caixa</p>
+          <input type="number" class="form-control" id="saque" name="vlsaque">
+          <div align="right">
+            <button class="btn btn-success"data-dismiss="modal" data-toggle="modal" data-target="#modalCaixa">Voltar</button>
+            <input type="submit" name="acao" class="btn btn-primary" value="Abrir Caixa">
+          </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+
 </body>
 </html>
 

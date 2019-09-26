@@ -322,7 +322,7 @@ if(!empty($_SESSION['login'])){
                 }
                 ?>
                 <tr>
-                  <td align='center'><img class="img-fluid" style="width: 20%" src="<?=$urlImg?>"> </td>
+                  <td align='center'><img class="img-fluid" style="width: 15%;" src="<?=$urlImg?>"> </td>
                   <td align='center'><?=$produtos['nome']?> </td>
                   <td align='center'><?=$produtos['descricao']?></td>
                   <td align='center'> <?=$produtos['marca']?> </td>
