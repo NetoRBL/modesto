@@ -532,12 +532,15 @@ if(!empty($_SESSION['login'])){
           <p>Escolha uma operação</p>
           <button id="abrCaixa" class="btn btn-secondary" data-dismiss="modal" data-toggle="modal" data-target="#modalAbrirCaixa" onclick="verificar('<?=$caixaInicial['valor']?>')" <?php
             if ($ultimo_status_caixa["data"] and $ultimo_status_caixa["status"] == "Fechado") {
-              echo "title='O caixa já foi fechado, amanhã poderá abrir novamente.' disabled";
+              echo "title='O caixa já foi fechado, amanhã poderá abrí-lo novamente.' disabled";
             }
           ?>>Abrir caixa</button>
-          <button class="btn btn-danger" style="margin-left: 10px; margin-right: 10px;">Fechar caixa</button>
-          <input type="hidden" name="statusCaixa" value="fechado">
-          <button class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#modalRetirada" onclick="valorMax('<?=$caixa['caixa']?>')">Retirada</button>
+          <button class="btn btn-danger" data-dismiss="modal" data-toggle="modal" data-target="#modalConfirmFecha" style="margin-left: 10px; margin-right: 10px;">Fechar caixa</button>
+          <button class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#modalRetirada" onclick="valorMax('<?=$caixa['caixa']?>')" <?php
+            if ($ultimo_status_caixa["data"] and $ultimo_status_caixa["status"] == "Fechado") {
+              echo "title='O caixa já foi fechado, amanhã poderá utilizá-lo novamente.' disabled";
+            }
+          ?>>Retirada</button>
         </div>
       </form>
     </div>
@@ -563,6 +566,29 @@ if(!empty($_SESSION['login'])){
           <div align="right">
             <button class="btn btn-success"data-dismiss="modal" data-toggle="modal" data-target="#modalCaixa">Voltar</button>
             <input type="submit" name="acao" class="btn btn-primary" value="Retirar">
+          </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="modal fade" id="modalConfirmFecha" tabindex="-1" role="dialog">
+  <div id="mdcaixa" class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title " align="center">TEM CERTEZA QUE DESEJA FECHAR O CAIXA?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+          <span aria-hidden="true">&times;</span>
+
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post">
+          <input type="hidden" name="statusCaixa" value="fechado">
+          <div align="right">
+            <button class="btn btn-secondary"data-dismiss="modal" data-toggle="modal" data-target="#modalCaixa">Não</button>
+            <input type="submit" class="btn btn-danger" value="Sim">
           </div>
       </form>
     </div>
