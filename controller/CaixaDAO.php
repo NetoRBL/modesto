@@ -37,7 +37,7 @@
 		function valor_caixa($data){
 			try{
 				require_once("../config/conexao.php");
-				$sql ="SELECT (SELECT SUM(valor) FROM venda WHERE data = :data) - (SELECT IFNULL(SUM(valor),0)FROM caixa WHERE status = 'Retirada' AND data = :data) AS valor_caixa";
+				$sql ="SELECT (SELECT IFNULL(SUM(valor),0) FROM venda WHERE data = :data) + (SELECT IFNULL(SUM(valor),0) FROM caixa WHERE status = 'Entrada' AND data = :data) + (SELECT IFNULL(valor,0) FROM caixa WHERE status = 'Aberto' AND data = :data) - (SELECT IFNULL(SUM(valor),0) FROM caixa WHERE status = 'Retirada' AND data = :data) AS valor_caixa";
 				$pdo = new PDO('mysql:host=localhost;dbname=modesto;charset=utf8', 'root', '');
 				$listar = $pdo->prepare($sql);
 				$listar->bindValue(':data',$data);
@@ -52,7 +52,7 @@
 		function check($data){
 			try{
 				require_once("../config/conexao.php");
-				$sql ="SELECT valor FROM caixa WHERE status = 'inicial_caixa' AND data = :data";
+				$sql ="SELECT valor FROM caixa WHERE status = 'Aberto' AND data = :data";
 				$pdo = new PDO('mysql:host=localhost;dbname=modesto;charset=utf8', 'root', '');
 				$listar = $pdo->prepare($sql);
 				$listar->bindValue(':data',$data);
