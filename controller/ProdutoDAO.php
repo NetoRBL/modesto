@@ -112,5 +112,19 @@
 				echo 'Erro:' . $e->getMessage();
 			}
 		}
+		function pegarValor($produto){
+			try{
+				require_once("../../config/conexao.php");
+				$sql ="SELECT preco FROM produto WHERE id = :id";
+				$pdo = new PDO('mysql:host=localhost;dbname=modesto;charset=utf8', 'root', '');
+				$listar = $pdo->prepare($sql);
+				$listar->bindValue(':id',$produto->getId());
+				$listar->execute();
+				$resultado = $listar->fetchAll(PDO::FETCH_ASSOC);
+				return $resultado;
+			} catch(PDOException $e){
+				echo 'Erro:' . $e->getMessage();
+			}
+		}
 	}
 ?>
