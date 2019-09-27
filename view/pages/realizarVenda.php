@@ -9,55 +9,57 @@ include_once("../../model/ProdutoModel.php");
 include_once("../../controller/ProdutoDAO.php");
 include_once("../../model/VendaModel.php");
 include_once("../../controller/servicoDAO.php");
+
+
+
 $servicoDAO = new servicoDAO();
 $servicos = $servicoDAO->listar_servicos();
 $venda = new Venda();
 $produtoModel = new Produto();
 $produtoDAO = new produtoDAO();
 $lista_produtos = $produtoDAO->listar_produtos();
-
 $vendaDAO = new vendaDAO();
-$produto = isset($_POST["produto"])?$_POST["produto"]:"";
-$preco = isset($_POST["preco"])?$_POST["preco"]:"";
-$imagem = isset($_FILES["imagem"]["name"])?$_FILES["imagem"]["name"]:"";
-$qtd = isset($_POST["qtd"])?$_POST["qtd"]:"";
-$qtdProd = isset($_POST["qtdProd"])?$_POST["qtdProd"]:"";
-$idProd = isset($_POST["idProd"])?$_POST["idProd"]:"";
-$data = date("d/m/Y");
-$hora = date("H:i");
-$num = isset($_POST["num"])?$_POST["num"]:"";
-$serv = isset($_POST["serv"])?$_POST["serv"]:"";
-if(isset($_POST['deslogar'])){
-  if($_POST['deslogar']=="Sim"){
-    unset($_SESSION['login']);
-    session_destroy();
-  }
-}
+// $produto = isset($_POST["produto"])?$_POST["produto"]:"";
+// $preco = isset($_POST["preco"])?$_POST["preco"]:"";
+// $imagem = isset($_FILES["imagem"]["name"])?$_FILES["imagem"]["name"]:"";
+// $qtd = isset($_POST["qtd"])?$_POST["qtd"]:"";
+// $qtdProd = isset($_POST["qtdProd"])?$_POST["qtdProd"]:"";
+// $idProd = isset($_POST["idProd"])?$_POST["idProd"]:"";
+// $data = date("d/m/Y");
+// $hora = date("H:i");
+// $num = isset($_POST["num"])?$_POST["num"]:"";
+// $serv = isset($_POST["serv"])?$_POST["serv"]:"";
+// if(isset($_POST['deslogar'])){
+//   if($_POST['deslogar']=="Sim"){
+//     unset($_SESSION['login']);
+//     session_destroy();
+//   }
+// }
 
-if (isset($_POST["acao"]) and $_POST["acao"]=="Registrar") {
-  $info = $vendaDAO->pegar_servico($serv);
-  $venda->setProduto($info["nome"]);
-  $venda->setValor($info["preco"] * $num);
-  $venda->setQtd($num);
-  $venda->setData($data);
-  $venda->setHora($hora);
-  $venda->setTipo(1);
-  $vendaDAO->cadastrar_venda($venda);
-}
+// if (isset($_POST["acao"]) and $_POST["acao"]=="Registrar") {
+//   $info = $vendaDAO->pegar_servico($serv);
+//   $venda->setProduto($info["nome"]);
+//   $venda->setValor($info["preco"] * $num);
+//   $venda->setQtd($num);
+//   $venda->setData($data);
+//   $venda->setHora($hora);
+//   $venda->setTipo(1);
+//   $vendaDAO->cadastrar_venda($venda);
+// }
 
-if (isset($_POST["acao"]) and $_POST["acao"]=="Vender") {
-  $venda->setProduto($produto);    
-  $venda->setData($data);
-  $venda->setHora($hora);
-  $venda->setValor($preco * $qtd);
-  $venda->setQtd($qtd);
-  $venda->setTipo(0);
-  $produtoModel->setQtd($qtdProd - $qtd);
-  $produtoModel->setId($idProd);
-  $produtoDAO->remover_produtos($produtoModel);
-  $vendaDAO->cadastrar_venda($venda);
+// if (isset($_POST["acao"]) and $_POST["acao"]=="Vender") {
+//   $venda->setProduto($produto);    
+//   $venda->setData($data);
+//   $venda->setHora($hora);
+//   $venda->setValor($preco * $qtd);
+//   $venda->setQtd($qtd);
+//   $venda->setTipo(0);
+//   $produtoModel->setQtd($qtdProd - $qtd);
+//   $produtoModel->setId($idProd);
+//   $produtoDAO->remover_produtos($produtoModel);
+//   $vendaDAO->cadastrar_venda($venda);
 
-}
+// }
 
 if(!empty($_SESSION['login'])){
   $log = $_SESSION['login'];
@@ -70,7 +72,7 @@ if(!empty($_SESSION['login'])){
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>AdminLTE 2 | Data Tables</title>
-     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
@@ -106,13 +108,14 @@ if(!empty($_SESSION['login'])){
     }
     $("#imgProd").attr("src", urlImagem);
     $("input#produto").val(produto);
-    $("input#preco").val(preco);
+    //$("input#preco").val(preco);
     $("input#qtdMax").attr("max", qtd);
     $("input#qtdProd").val(qtd);
     $("input#qtdEsto").val(qtd);
-    $("input#idProd").val(id);
+    $("input#preco").val(id);
   }
 </script>
+
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
   <div class="wrapper">
@@ -186,6 +189,7 @@ if(!empty($_SESSION['login'])){
             <a href="realizarVenda.php">
               <i class="fa fa-money"></i>
               <span>Realizar Venda</span>
+              
             </a>
           </li>
           <li>
@@ -196,6 +200,7 @@ if(!empty($_SESSION['login'])){
           <li>
             <a href="produtos.php">
               <i class="glyphicon glyphicon-pencil"></i> <span>Produtos</span>
+
             </a>
           </li>
           <li>
@@ -210,7 +215,7 @@ if(!empty($_SESSION['login'])){
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-    <section class="content-header">
+      <section class="content-header">
         <h1>
           Realizar uma venda
           <small>marque os produtos</small>
@@ -227,6 +232,7 @@ if(!empty($_SESSION['login'])){
             <div class="box">
               <div class="box-header">
                 <h3 class="box-title">Produtos</h3>
+                <input class="resultado"></input>
                 <div align="right">
                   <button id="btnImpress" class="btn btn-primary" data-toggle="modal" data-target="#modalExemplo">Serviços</button>
                 </div>
@@ -393,10 +399,10 @@ if(!empty($_SESSION['login'])){
               foreach ($servicos as $servico) {
                 ?> 
                 <option value="<?=$servico["id"]?>"><?=$servico["nome"]?></option>
-              
-              <?php
-            }
-            ?>
+
+                <?php
+              }
+              ?>
             </select>
             <p align="center" style="margin-top: 4px;"><input min="1" class="form-control form-control-lg" type="number" name="num"></p>
           </div>
@@ -422,7 +428,7 @@ if(!empty($_SESSION['login'])){
         </button>
       </div>
       <div class="modal-body">
-        <form method="post" enctype="multipart/form-data">
+        <form action="" id="teste">
 
 
           <div class="form-group">
@@ -430,18 +436,18 @@ if(!empty($_SESSION['login'])){
               <img id="imgProd" class="img rounded-circle" src="../../imagens/icone-produtos.png" style="width:15%; cursor:pointer" title="Clique para adicionar uma foto"/>
             </div>
             <div class="form-group">
-              <input id="fotoProd" name="teste2" class="form-control" type="file" accept="image/*" style="display:none;">
+
               <br>
               <label for="produto">Nome</label>
               <input readonly style="cursor: pointer;" type="text" class="form-control" name="produto" id="produto">
               <label for="preco">Preço</label>
-              <input readonly style="cursor: pointer;" type="text" class="form-control" name="preco" id="preco">
+              <input readonly style="cursor: pointer;" type="text" class="form-control" >
               <label for="max">Quantidade em estoque</label>
               <input readonly style="cursor: pointer;" type="text" class="form-control" id="qtdEsto">
               <label for="qtdMax">Quantidade a ser vendida</label>
               <input type="number" class="form-control" name="qtd" id="qtdMax" min="1">
               <input type="hidden" name="qtdProd" id="qtdProd">
-              <input type="hidden" name="idProd" id="idProd">
+              <input type="hidden"  name="preco" id="preco">
 
             </div>
 
@@ -450,7 +456,7 @@ if(!empty($_SESSION['login'])){
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-            <input type="submit" class="btn btn-success" name="acao" value="Vender">
+            <input type="submit"  value="Vender">
           </form>
         </div>
       </div>
@@ -477,7 +483,53 @@ if(!empty($_SESSION['login'])){
     });
    });
  </script>
+ <script type="text/javascript">
 
+  $(document).ready(function(){
+    $("form#teste").submit(function(){
+      var preco = $("#preco").val();
+          //
+          if (preco == "") {
+            alert("Erro");
+          }
+          else{
+            $.ajax({
+              url: 'processos.php',
+              data: {preco : preco},
+              type: 'POST',
+              dataType: 'json',
+
+              success: function(retorno){
+                alert("teste");
+                // if(retorno.erro == 1){
+                //   alert(retorno.msg);
+                // }else{
+                //   valor_total = $(".resultado").val();
+                //   if (valor_total == "") {
+                //     $(".resultado").val(retorno.valor);
+                //   }
+                //   else{
+
+                //     valor_total = parseInt(valor_total,10);
+                //     valor3 = parseInt(retorno.valor,10);
+                //     valor_final = valor3+valor_total; 
+                //   }
+              
+                $(".resultado").val(retorno.valor);
+                // }
+              },
+              error: function(){
+                alert("HOUVE ALGUM ERRO");
+              }
+            });
+          }
+          //
+          return false;
+        });
+  });
+
+
+</script>
 </body>
 </html>
 <?php } else{ header("location:../index.php"); } ?>

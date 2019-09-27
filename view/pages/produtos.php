@@ -526,15 +526,15 @@ if(!empty($_SESSION['login'])){
                         <div class="form-group">
                           <input id="teste2" name="imagem" class="form-control" type="file" accept="image/*" style="display:none;">
                           <br>
-                          <input type="hidden" name="nImagem" id="nImagem">
+                          <input type="hidden" name="nImagem" id="nImagem" required>
                           <label for="nome">Nome</label>
-                          <input type="text" class="form-control" name="nome">
+                          <input type="text" class="form-control" name="nome" required>
                           <label for="preco">Preço</label>
-                          <input type="text" class="form-control" name="preco" min="0">
+                          <input type="text" class="form-control" name="preco" min="0" required>
                           <label for="descricao">Descrição</label>
-                          <input type="text" class="form-control" name="descricao">
+                          <input type="text" class="form-control" name="descricao" required>
                           <label for="marca">Marca</label>
-                          <input type="text" class="form-control" name="marca" >
+                          <input type="text" class="form-control" name="marca" required>
                           <label for="marca">Quantidade</label>
                           <input type="number" class="form-control" name="qtd" min="1">
 
@@ -551,7 +551,9 @@ if(!empty($_SESSION['login'])){
                   </div>
                 </div>
               </div>
-
+              <script type="text/javascript">
+                
+              </script>
               <script type="text/javascript">
                $(document).ready(function () {
                  $('#teste').click(function () {
