@@ -97,15 +97,7 @@ if(!empty($_SESSION['login'])){
       function valorMax(max){
         $("input#saque").attr("max", max);        
       }
-      function verificar(val){
-        if (val == 0 || val == false) {
-          $("#abrCaixa").attr("disabled", false); 
-        }
-        else{
-          $("#abrCaixa").attr("disabled", true);
-          alert("Valor inicial do caixa já confirmado"); 
-        }
-      }
+      
     </script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -441,6 +433,41 @@ if(!empty($_SESSION['login'])){
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
 <script src="bower_components/chart.js/Chart.js"></script>
+<?php
+  if (isset($_GET['confirm']) && $_GET['status'] == "Retirada") {
+    ?>
+    <script>
+      $(document).ready(function (){
+        $("#modalConfirmRetirada").modal("show");
+      });
+    </script>
+    <?php
+  }else if (isset($_GET['confirm']) && $_GET['status'] == "Entrada") {
+    ?>
+    <script>
+      $(document).ready(function (){
+        $("#modalConfirmEntrada").modal("show");
+      });
+    </script>
+    <?php
+  }else if (isset($_GET['confirm']) && $_GET['status'] == "Aberto") {
+    ?>
+    <script>
+      $(document).ready(function (){
+        $("#modalConfirmCaixaAberto").modal("show");
+      });
+    </script>
+    <?php
+  }else if (isset($_GET['confirm']) && $_GET['status'] == "Fechado") {
+    ?>
+    <script>
+      $(document).ready(function (){
+        $("#modalConfirmCaixaFechado").modal("show");
+      });
+    </script>
+    <?php
+  }
+?>
 <script>
   $(function () {
     /* ChartJS
@@ -529,6 +556,78 @@ if(!empty($_SESSION['login'])){
   })
 </script>
 
+<div class="modal fade" id="modalConfirmRetirada" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title " align="center" style="color:red;">-R$ <?=$ultimo_status_caixa['valor']?></h4>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-success" role="alert">
+          Retirada efetuada com sucesso!
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalConfirmEntrada" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title " align="center" style="color:green;">+R$ <?=$ultimo_status_caixa['valor']?></h4>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-success" role="alert">
+          Entrada efetuada com sucesso!
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalConfirmCaixaFechado" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title " align="center" style="color:red;">Fechado</h4>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-success" role="alert">
+          Caixa Fechado
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalConfirmCaixaAberto" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title " align="center" style="color:green;">Aberto</h4>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-success" role="alert">
+          Caixa Aberto
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal fade" id="modalCaixa" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -536,16 +635,24 @@ if(!empty($_SESSION['login'])){
         <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h5 class="modal-title " align="center">Caixa</h5>
+        <h5 class="modal-title " align="center">Caixa <?php 
+          if ($ultimo_status_caixa["status"] == "Fechado") {
+            echo "<b style='color:red;'>Fechado</b>";
+          }else{
+            echo "<b style='color:green;'>Aberto</b>";
+          }
+        ?></h5>
         <h4 class="modal-title " align="center">Escolha uma operação</h4>
       </div>
       <div class="modal-body">
         <div class="container-fluid">
           <form method="post">
             <div>
-              <div class="col-md-3 ml-auto"><button id="abrCaixa" class="btn btn-secondary btn-block btn-lg" data-dismiss="modal" data-toggle="modal" data-target="#modalAbrirCaixa" onclick="verificar('<?=$caixaInicial['valor']?>')" <?php
+              <div class="col-md-3 ml-auto"><button id="abrCaixa" class="btn btn-secondary btn-block btn-lg" data-dismiss="modal" data-toggle="modal" data-target="#modalAbrirCaixa")" <?php
                 if ($ultimo_status_caixa["data"] == date("d/m/Y") and $ultimo_status_caixa["status"] == "Fechado") {
                   echo "title='O caixa já foi fechado, amanhã poderá abrí-lo novamente.' disabled";
+                }elseif ($ultimo_status_caixa["status"] != "Fechado") {
+                  echo "title='O caixa já está aberto.' disabled";
                 }
               ?>>Abrir caixa</button></div>
               <div class="col-md-3 ml-auto"><button class="btn btn-danger btn-block btn-lg" data-dismiss="modal" data-toggle="modal" data-target="#modalConfirmFecha" <?php
